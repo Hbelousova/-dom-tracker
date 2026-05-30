@@ -46,6 +46,13 @@
   .offer-v{font-size:12.5px;margin:3px 0;color:#166534;font-weight:700}
   .offer-f{margin:4px 0 0;padding-left:16px;font-size:12px;color:#334155}
   .offer-f li{margin:1px 0}
+  .ask{margin-top:6px;font-size:12px}
+  .ask summary{cursor:pointer;color:#1f4e78;font-weight:600;font-size:12.5px}
+  .ask ul{margin:6px 0 0;padding-left:16px;color:#334155}
+  .ask li{margin:2px 0}
+  .howto{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:14px 0 0;font-size:13px;color:#334155}
+  .howto summary{cursor:pointer;font-weight:700;color:#1f4e78;font-size:14px}
+  .howto div{margin-top:8px;line-height:1.7}
   .tag{display:inline-block;background:#f1f5f9;border-radius:6px;padding:2px 7px;font-size:12px;margin:2px 2px 0 0}
   .links{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:8px;border-top:1px solid var(--line)}
   .links a{font-size:12.5px;text-decoration:none;border:1px solid var(--line);padding:6px 9px;border-radius:8px;color:var(--accent)}
@@ -77,6 +84,16 @@
   <p>Lesznowola · Magdalenka · Słomin · Raszyn · Nadarzyn (+ резерв) · бюджет ≤900k без отделки · обновлено 30.05.2026</p>
 </header>
 <div class="wrap">
+  <details class="howto" open>
+    <summary>ℹ️ Как пользоваться (нажми, чтобы свернуть)</summary>
+    <div>
+      <b>1.</b> Кликни цветной пин на карте → цена, что входит и кнопка «📷 Фото и планировки».<br>
+      <b>2.</b> Кнопки-фильтры под картой показывают объекты по статусу. <b>3.</b> В карточке внизу — «❓ Что спросить у девелопера».<br>
+      <b>Статусы:</b> 🟢 Приоритет (наши фавориты) · 🟡 Смотрим · 🔵 Проверить · ⚪ Резерв · 🟣 Вторичка (готовые дома).<br>
+      <b>Рейтинг:</b> 📈 прирост капитала · 🔑 потенциал аренды (★ из 3).<br>
+      <b>Словарь:</b> <i>stan deweloperski</i> — без отделки (голые стены) · <i>czynsz/opłata</i> — ежемес. платёж за осиедле · <i>эскроу (MRP)</i> — деньги под защитой банка · <i>PCC 2%</i> — налог на вторичке · <i>odbiór</i> — приёмка дома · <i>PV/фотовольтаика</i> — солнечные панели.
+    </div>
+  </details>
   <div id="map"></div>
   <div class="layers">
     <small>Слои на карте:</small>
@@ -235,7 +252,15 @@ const OFFER={
  12:{u:"близняк/шеренг. 103–120 м², 895k–1,17 млн",v:"⚠ В бюджет только младший ~895k",f:["застройщик DPM Invest (опытный, этап I 2021–23)","узел S8 рядом","доступно 4 близняка + 4 шеренговца"]},
  19:{u:"5к, 72–94 м², от 8 900 zł/м² (~640–840k)",v:"✅ В бюджет (72–94 м²)",f:["отопление: ТЕПЛОВОЙ НАСОС (низкая коммуналка)","вплотную к Słomin / Nova Magdalenka / 3M","застройщик MK Residential"]},
  20:{u:"до 98 м², 4к, от 9 727 zł/м² (~950k)",v:"⚠ На грани/выше бюджета (~950k)",f:["отопление: газ","Ronson — крупный биржевой девелопер (надёжность/ликвидность)","Falenty Nowe, у 3M"]},
- 28:{u:"сегмент 73 м² — 680k (вторичка)",v:"✅ В бюджет, готов",f:["под собственную аранжировку","осиедле Novisa у 3M","дом — czynsz низкий/нулевой"]}
+ 28:{u:"сегмент 73 м² — 680k (вторичка)",v:"✅ В бюджет, готов",f:["под собственную аранжировку","осиедле Novisa у 3M","дом — czynsz низкий/нулевой"]},
+ 16:{u:"дом/близняк, от 81 м² (5к) — от 879k",v:"✅ В бюджет (~879k), высокий стандарт",f:["кондиционер + тёплый пол + камин","рельсы к Воле, но ~20 мин до 3M","застройщик JDM"]},
+ 21:{u:"сегмент, ~7 143 zł/м² (дёшево)",v:"уточнить общую цену — но дёшево",f:["самый низкий zł/м² у 3M","Walendów (гм. Nadarzyn)","частное — проверить детали"]},
+ 22:{u:"дом с гаражом и садом, ~8 407 zł/м²",v:"уточнить общую цену",f:["Stara Wieś, у 3M","частное объявление"]},
+ 26:{u:"крайний сегмент у леса — 898k (готов)",v:"✅ В бюджет, ГОТОВ к заезду",f:["у леса в Magdalenka, рядом 3M","вторичка — проверить состояние","дом — czynsz низкий"]},
+ 29:{u:"сегмент ~73 м² — 690k (stan dev.)",v:"✅ В бюджет",f:["солнечный, с огородом","Słomin, у 3M","вторичка"]},
+ 30:{u:"дом 178 м², 4к — 787k (~4 416 zł/м²)",v:"✅ В бюджет, много метража",f:["большой дом дёшево за м²","проверить состояние/коммуналку","Nadarzyn"]},
+ 31:{u:"у леса Młochowskiego — 850k",v:"✅ В бюджет",f:["рядом 3M","у леса","вторичка"]},
+ 32:{u:"дом ~144 м² — 949k",v:"⚠ На грани бюджета",f:["свежее объявление","тихо/зелено, Stara Wieś"]}
 };
 const LABELS={prio:["🟢 Приоритет","b-prio"],look:["🟡 Смотрим","b-look"],check:["🔵 Проверить","b-check"],res:["⚪ Резерв","b-res"],sec:["🔁 Вторичка","b-sec"]};
 const map=L.map('map').setView([52.09,20.90],11);
@@ -252,6 +277,20 @@ function invBlock(o){const v=INVEST[o.id];if(!v)return"";const s=n=>"★".repeat
 const STATUS_COLOR={prio:"#16a34a",look:"#d97706",check:"#2563eb",res:"#94a3b8",sec:"#7c3aed"};
 function pinIcon(c){return L.divIcon({className:"pinic",html:'<svg width="26" height="38" viewBox="0 0 26 38" xmlns="http://www.w3.org/2000/svg"><path d="M13 0C5.82 0 0 5.82 0 13c0 9.25 13 25 13 25s13-15.75 13-25C26 5.82 20.18 0 13 0z" fill="'+c+'" stroke="#ffffff" stroke-width="2"/><circle cx="13" cy="13" r="4.5" fill="#ffffff"/></svg>',iconSize:[26,38],iconAnchor:[13,38],popupAnchor:[0,-34]});}
 function offerBlock(o){const x=OFFER[o.id];if(!x)return"";return `<div class="offer"><div class="offer-u">📋 ${x.u}</div><div class="offer-v">${x.v}</div><ul class="offer-f">${x.f.map(i=>"<li>"+i+"</li>").join("")}</ul></div>`;}
+const BASE=["Точная цена выбранного юнита + что входит?","Парковка/гараж — в цене или доплата (сколько)?","Czynsz/opłata за осиедле — сколько zł/мес?","Эскроу: otwarty или zamknięty rachunek powierniczy + DFG?","Стандарт: stan deweloperski или под ключ?","Точная дата сдачи (akt notarialny)?","Тип отопления + класс энергии (счета зимой)?","Что разрешено строить рядом (MPZP)?","График траншей под ипотеку?"];
+const BASE_SEC=["Год постройки + класс энергии (реальные счета/мес)?","Wspólnota/opłata за осиедле — сколько zł/мес?","Состояние — нужен ли ремонт? (заказать техинспекцию)","Что остаётся: кухня, мебель, шкафы?","Księga wieczysta — обременения / ипотека продавца?","Причина продажи + сколько в продаже?","PCC 2% + нотариус — учесть в бюджете","Готовность к торгу?"];
+const ASK={
+ 1:["Парковка 40k обязательна — можно 1 место (20k)?","Какой этап и срок: IV–VI (I кв.2027) или VII–VIII (III кв.2027)?","Детсад/магазин на осиедли уже работают?"],
+ 2:["Сколько именно домов осталось и какие (метраж/цена)?","Подтвердить тип отопления и счета","Устранены ли дефекты с прошлых приёмок? — своя инспекция"],
+ 3:["Точная цена дома 80–90 м²?","Парковка и размер участка?","Срок сдачи?"],
+ 11:["Точная цена сегмента 85–95 м²?","Подтвердить тепловой насос + счета","Парковка в цене?"],
+ 12:["Младший юнит ~895k — близняк или шеренговец, метраж/планировка?","Срок сдачи этапа II?"],
+ 16:["Точная цена дома 81 м²?","Что входит в «высокий стандарт» (отделка?)","Парковка/участок?"],
+ 19:["Точная цена юнита 72–80 м²?","Срок сдачи?","Парковка в цене? czynsz?"],
+ 20:["Точная цена 4-комн ~98 м² — реально ли уложиться в ≤900k?","Подтвердить срок сдачи"],
+ 26:["Год постройки и состояние?","Причина продажи, есть ли ипотека на объекте?","Что входит (кухня/отделка)?"]
+};
+function askBlock(o){const spec=ASK[o.id]||[];const base=o.status==="sec"?BASE_SEC:BASE;const q=spec.concat(base);return `<details class="ask"><summary>❓ Что спросить у девелопера (${q.length})</summary><ul>${q.map(i=>"<li>"+i+"</li>").join("")}</ul></details>`;}
 function render(filter){
   const grid=document.getElementById('grid');grid.innerHTML="";let n=0;objLayer.clearLayers();const used={};
   const SC=o=>{const v=INVEST[o.id];return v?v.g+v.r:0;};
@@ -267,7 +306,7 @@ function render(filter){
       🏠 ${o.type} · ${o.area}<br>
       <span class="price">💰 ${o.price}</span> ${o.entry?`· <span style="color:#64748b">${o.entry}</span>`:""}<br>
       🗓 ${o.done}${ft?`<br><span class="fin">${ft}</span>`:""}${invBlock(o)}</div>
-      <div>${tags}</div>${offerBlock(o)}
+      <div>${tags}</div>${offerBlock(o)}${askBlock(o)}
       <div class="links">
         <a href="${o.site}" target="_blank" rel="noopener">🌐 Сайт застройщика</a>
         <a href="${LINKS[o.id]||o.portal}" target="_blank" rel="noopener">📷 ${LINKS[o.id]?"Фото и планировки":"Портал / фото"}</a>
