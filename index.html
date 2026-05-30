@@ -145,11 +145,14 @@ const OBJ = [
    site:"https://rynekpierwotny.pl/s/nowe-domy-grodzisk-mazowiecki/",portal:"https://www.otodom.pl/pl/wyniki/sprzedaz/dom,rynek-pierwotny/mazowieckie/grodziski/grodzisk-mazowiecki"},
  {id:17,status:"check",name:"Falenty Nowe — домы (зона)",dev:"уточнить",loc:"Falenty Nowe",gmina:"Raszyn",type:"дом",area:"уточнить",price:"от 589k",entry:"✅ самые дешёвые в pruszkowski",done:"уточнить",tags:["дёшево","рядом с 3M ~10–15 мин"],lat:52.1380,lng:20.9150,
    site:"https://rynekpierwotny.pl/s/nowe-domy-pruszkowski-falenty-nowe/",portal:"https://www.otodom.pl/pl/wyniki/sprzedaz/dom,rynek-pierwotny/mazowieckie/pruszkowski/raszyn/falenty-nowe"},
+ {id:18,status:"res",name:"Beta Projekt (Raszyn)",dev:"Beta Projekt",loc:"Raszyn",gmina:"Raszyn",type:"дом",area:"109–129 м²",price:"от 969k",entry:"⚠ выше бюджета",done:"уточнить",tags:["4–5 комн","выше бюджета","найден на Otodom"],lat:52.1430,lng:20.9300,
+   site:"https://www.otodom.pl/pl/wyniki/sprzedaz/dom,rynek-pierwotny/mazowieckie/pruszkowski/raszyn",portal:"https://www.otodom.pl/pl/wyniki/sprzedaz/dom,rynek-pierwotny/mazowieckie/pruszkowski/raszyn"},
 ];
 const LABELS={prio:["🟢 Приоритет","b-prio"],look:["🟡 Смотрим","b-look"],check:["🔵 Проверить","b-check"],res:["⚪ Резерв","b-res"]};
 const map=L.map('map').setView([52.09,20.90],11);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(map);
 const markers={};
+const objLayer=L.layerGroup().addTo(map);
 function gmaps(o){return "https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(o.loc+" "+o.name+" "+o.gmina);}
 function finText(o){
   if(o.tags.join(" ").match(/под ключ/i)||(o.done||"").match(/pod klucz/i))return "🔨 отделка включена";
@@ -157,7 +160,7 @@ function finText(o){
   return "🔨 отделка ~"+Math.round(parseInt(m[0])*1750/1000)+"k zł (отдельно)";
 }
 function render(filter){
-  const grid=document.getElementById('grid');grid.innerHTML="";let n=0;
+  const grid=document.getElementById('grid');grid.innerHTML="";let n=0;objLayer.clearLayers();
   OBJ.forEach(o=>{
     if(filter!=="all"&&o.status!==filter)return;n++;
     const [lbl,cls]=LABELS[o.status];
@@ -178,10 +181,9 @@ function render(filter){
         <a href="#" onclick="focusMap(${o.id});return false;">📌 На карте</a>
       </div>`;
     grid.appendChild(card);
-    if(!markers[o.id]){
-      markers[o.id]=L.marker([o.lat,o.lng]).addTo(map)
-        .bindPopup(`<b>${o.name}</b><br>${o.loc}<br>${o.price}<br><a href="${o.site}" target="_blank">Сайт →</a>`);
-    }
+    markers[o.id]=L.marker([o.lat,o.lng])
+      .bindPopup(`<b>${o.name}</b><br>${o.loc}<br>${o.price}<br><a href="${o.site}" target="_blank">Сайт →</a>`);
+    markers[o.id].addTo(objLayer);
   });
   document.getElementById('count').textContent=`Показано объектов: ${n} из ${OBJ.length}`;
 }
@@ -197,7 +199,7 @@ render("all");
 /* ---------- Места работы ---------- */
 const WORK=[
  {name:"💼 Работа: 3M",lat:52.0866,lng:20.8347,info:"3M Poland, al. Katowicka 117, Kajetany (gm. Nadarzyn)"},
- {name:"💼 Работа: Wola",lat:52.2360,lng:20.9850,info:"Warszawa, Wola (центр — уточнить точный адрес)"},
+ {name:"💼 Работа: Wola (Płocka 5a)",lat:52.2336,lng:20.9647,info:"ul. Płocka 5a, 01-231 Warszawa (Wola)"},
 ];
 const workIcon=L.divIcon({className:"",html:'<div style="font-size:24px;line-height:24px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.4))">💼</div>',iconSize:[26,26],iconAnchor:[13,13]});
 WORK.forEach(w=>L.marker([w.lat,w.lng],{icon:workIcon,zIndexOffset:1000}).addTo(map)
