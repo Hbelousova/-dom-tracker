@@ -13,8 +13,17 @@
   header h1{margin:0;font-size:20px}
   header p{margin:6px 0 0;color:#94a3b8;font-size:13px}
   .wrap{max-width:1200px;margin:0 auto;padding:16px}
-  #map{height:380px;border-radius:12px;border:1px solid var(--line);margin:16px 0}
-  .filters{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 4px}
+  #map{height:420px;border-radius:12px;border:1px solid var(--line);margin:16px 0 6px}
+  .layers{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:4px 0 2px}
+  .layers small{color:var(--muted)}
+  .layers button{border:1px solid var(--line);background:#fff;padding:6px 11px;border-radius:999px;cursor:pointer;font-size:13px}
+  .layers button.on{color:#fff}
+  .ltransport.on{background:#2563eb;border-color:#2563eb}
+  .lschool.on{background:#dc2626;border-color:#dc2626}
+  .lshop.on{background:#16a34a;border-color:#16a34a}
+  .lkinder.on{background:#d97706;border-color:#d97706}
+  #poihint{font-size:12px;color:var(--muted);margin:2px 0 10px}
+  .filters{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px}
   .filters button{border:1px solid var(--line);background:#fff;padding:7px 12px;border-radius:999px;cursor:pointer;font-size:13px}
   .filters button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
   .count{color:var(--muted);font-size:13px;margin:6px 2px 14px}
@@ -42,12 +51,21 @@
 </header>
 <div class="wrap">
   <div id="map"></div>
+  <div class="layers">
+    <small>Слои на карте:</small>
+    <button class="ltransport" data-poi="transport">🚉 Транспорт</button>
+    <button class="lschool" data-poi="school">🏫 Школы</button>
+    <button class="lshop" data-poi="shop">🏪 Магазины</button>
+    <button class="lkinder" data-poi="kinder">🧒 Детсады</button>
+  </div>
+  <div id="poihint">Включи слой и приблизь карту к объекту (zoom ≥ 13), чтобы увидеть остановки, станции, школы, магазины и детсады поблизости. Данные — OpenStreetMap.</div>
+
   <div class="filters" id="filters"></div>
   <div class="count" id="count"></div>
   <div class="grid" id="grid"></div>
-  <p class="note">⚠️ Фото и актуальное наличие/цены — по кнопкам «Сайт застройщика» и «Портал» в каждой карточке (в статической странице они не вшиты, т.к. меняются). Маркеры на карте — ориентир по локалитету, не точный участок.</p>
+  <p class="note">⚠️ Фото и актуальное наличие/цены — по кнопкам «Сайт застройщика» и «Портал» в каждой карточке (в статической странице они не вшиты, т.к. меняются). Маркеры объектов — ориентир по локалитету, не точный участок. На карте — только дома/близняки (квартиры исключены).</p>
 </div>
-<footer>Источник данных: сайты застройщиков и порталы (rynekpierwotny, otodom, tabelaofert, nieruchomosci-online). Не оферта.</footer>
+<footer>Источник данных: сайты застройщиков и порталы (rynekpierwotny, otodom, tabelaofert, nieruchomosci-online) + POI OpenStreetMap. Не оферта.</footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
@@ -120,7 +138,7 @@ function render(filter){
   });
   document.getElementById('count').textContent=`Показано объектов: ${n} из ${OBJ.length}`;
 }
-function focusMap(id){const o=OBJ.find(x=>x.id===id);map.setView([o.lat,o.lng],14);markers[id].openPopup();window.scrollTo({top:0,behavior:'smooth'});}
+function focusMap(id){const o=OBJ.find(x=>x.id===id);map.setView([o.lat,o.lng],15);markers[id].openPopup();window.scrollTo({top:0,behavior:'smooth'});}
 const fbar=document.getElementById('filters');
 [["all","Все"],["prio","🟢 Приоритет"],["look","🟡 Смотрим"],["check","🔵 Проверить"],["res","⚪ Резерв"]].forEach(([k,t],i)=>{
   const b=document.createElement('button');b.textContent=t;if(i===0)b.className="active";
@@ -128,6 +146,50 @@ const fbar=document.getElementById('filters');
   fbar.appendChild(b);
 });
 render("all");
+
+/* ---------- POI слои (OpenStreetMap / Overpass) ---------- */
+const POI={
+  transport:{color:"#2563eb",layer:L.layerGroup(),q:'node["highway"="bus_stop"](BB);node["railway"~"^(station|halt|tram_stop)$"](BB);node["station"="subway"](BB);'},
+  school:{color:"#dc2626",layer:L.layerGroup(),q:'node["amenity"="school"](BB);way["amenity"="school"](BB);'},
+  shop:{color:"#16a34a",layer:L.layerGroup(),q:'node["shop"~"^(supermarket|convenience)$"](BB);way["shop"~"^(supermarket|convenience)$"](BB);'},
+  kinder:{color:"#d97706",layer:L.layerGroup(),q:'node["amenity"="kindergarten"](BB);way["amenity"="kindergarten"](BB);'},
+};
+const active=new Set();
+const hint=document.getElementById('poihint');
+async function loadPOI(key){
+  const g=POI[key];const b=map.getBounds();
+  const bb=`${b.getSouth().toFixed(5)},${b.getWest().toFixed(5)},${b.getNorth().toFixed(5)},${b.getEast().toFixed(5)}`;
+  const query=`[out:json][timeout:25];(${g.q.replaceAll("BB",bb)});out center 200;`;
+  const url="https://overpass-api.de/api/interpreter?data="+encodeURIComponent(query);
+  try{
+    const res=await fetch(url);const data=await res.json();
+    g.layer.clearLayers();
+    data.elements.forEach(el=>{
+      const lat=el.lat||(el.center&&el.center.lat),lng=el.lon||(el.center&&el.center.lon);
+      if(!lat)return;
+      const t=el.tags||{};const name=t.name||t.operator||"";
+      L.circleMarker([lat,lng],{radius:5,weight:1,color:"#fff",fillColor:g.color,fillOpacity:0.9})
+        .bindTooltip(name||key,{direction:"top"}).addTo(g.layer);
+    });
+  }catch(e){console.warn("Overpass error",e);}
+}
+function refreshActive(){
+  if(active.size===0)return;
+  if(map.getZoom()<13){hint.textContent="🔎 Приблизь карту (zoom ≥ 13), чтобы загрузить точки выбранных слоёв.";return;}
+  hint.textContent="Загружаю точки из OpenStreetMap…";
+  Promise.all([...active].map(loadPOI)).then(()=>{hint.textContent="Готово. Двигай карту — точки обновятся под видимую область.";});
+}
+document.querySelectorAll('.layers button').forEach(btn=>{
+  btn.onclick=()=>{
+    const key=btn.dataset.poi;
+    if(active.has(key)){active.delete(key);btn.classList.remove("on");map.removeLayer(POI[key].layer);}
+    else{active.add(key);btn.classList.add("on");POI[key].layer.addTo(map);
+      if(map.getZoom()<13){map.setView([52.089,20.90],14);}
+      loadPOI(key);}
+    refreshActive();
+  };
+});
+map.on('moveend',refreshActive);
 </script>
 </body>
 </html>
