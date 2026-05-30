@@ -33,6 +33,7 @@
   .b-prio{background:#dcfce7;color:#166534}.b-look{background:#fef9c3;color:#854d0e}
   .b-check{background:#dbeafe;color:#1e40af}.b-res{background:#f1f5f9;color:#475569}
   .b-sec{background:#ede9fe;color:#6d28d9}
+  .pinic{background:transparent;border:0}
   .card h3{margin:2px 0 0;font-size:16px}
   .dev{color:var(--muted);font-size:13px}
   .meta{font-size:13px;line-height:1.5}
@@ -233,8 +234,10 @@ function finText(o){
   return "🔨 отделка ~"+Math.round(parseInt(m[0])*1750/1000)+"k zł (отдельно)";
 }
 function invBlock(o){const v=INVEST[o.id];if(!v)return"";const s=n=>"★".repeat(n)+"☆".repeat(3-n);return `<br><span class="inv">📈 ${s(v.g)} · 🔑 ${s(v.r)}</span>${v.why?`<br><span class="why">${v.why}</span>`:""}`;}
+const STATUS_COLOR={prio:"#16a34a",look:"#d97706",check:"#2563eb",res:"#94a3b8",sec:"#7c3aed"};
+function pinIcon(c){return L.divIcon({className:"pinic",html:'<svg width="26" height="38" viewBox="0 0 26 38" xmlns="http://www.w3.org/2000/svg"><path d="M13 0C5.82 0 0 5.82 0 13c0 9.25 13 25 13 25s13-15.75 13-25C26 5.82 20.18 0 13 0z" fill="'+c+'" stroke="#ffffff" stroke-width="2"/><circle cx="13" cy="13" r="4.5" fill="#ffffff"/></svg>',iconSize:[26,38],iconAnchor:[13,38],popupAnchor:[0,-34]});}
 function render(filter){
-  const grid=document.getElementById('grid');grid.innerHTML="";let n=0;objLayer.clearLayers();
+  const grid=document.getElementById('grid');grid.innerHTML="";let n=0;objLayer.clearLayers();const used={};
   const SC=o=>{const v=INVEST[o.id];return v?v.g+v.r:0;};
   [...OBJ].sort((a,b)=>SC(b)-SC(a)).forEach(o=>{
     if(filter!=="all"&&o.status!==filter)return;n++;
@@ -256,8 +259,11 @@ function render(filter){
         <a href="#" onclick="focusMap(${o.id});return false;">📌 На карте</a>
       </div>`;
     grid.appendChild(card);
-    markers[o.id]=(o.status==="sec"?L.circleMarker([o.lat,o.lng],{radius:8,weight:2,color:"#fff",fillColor:"#7c3aed",fillOpacity:1}):L.marker([o.lat,o.lng]))
-      .bindPopup(`<b>${o.name}</b><br>${o.loc}<br>${o.price}<br><a href="${o.site}" target="_blank">Сайт →</a>`);
+    const ky=o.lat.toFixed(4)+","+o.lng.toFixed(4);const cnt=used[ky]||0;used[ky]=cnt+1;
+    let plat=o.lat,plng=o.lng;
+    if(cnt>0){const ang=cnt*(Math.PI/4),rad=0.0006*(1+Math.floor(cnt/8));plat+=rad*Math.cos(ang);plng+=rad*Math.sin(ang);}
+    markers[o.id]=L.marker([plat,plng],{icon:pinIcon(STATUS_COLOR[o.status]||"#2563eb")})
+      .bindPopup(`<b>${o.name}</b><br>${o.loc} · ${o.price}<br><a href="${LINKS[o.id]||o.site}" target="_blank" rel="noopener" style="display:inline-block;margin-top:6px;padding:5px 10px;background:#1f4e78;color:#fff;border-radius:6px;text-decoration:none">📷 Фото на Otodom →</a>`);
     markers[o.id].addTo(objLayer);
   });
   document.getElementById('count').textContent=`Показано объектов: ${n} из ${OBJ.length}`;
