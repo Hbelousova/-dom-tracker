@@ -22,7 +22,7 @@
   .lschool.on{background:#dc2626;border-color:#dc2626}
   .lshop.on{background:#16a34a;border-color:#16a34a}
   .lkinder.on{background:#d97706;border-color:#d97706}
-  #poihint{font-size:12px;color:var(--muted);margin:2px 0 10px}
+  #poihint{font-size:12px;color:var(--muted);margin:2px 0 10px;min-height:16px}
   .filters{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px}
   .filters button{border:1px solid var(--line);background:#fff;padding:7px 12px;border-radius:999px;cursor:pointer;font-size:13px}
   .filters button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
@@ -36,11 +36,29 @@
   .dev{color:var(--muted);font-size:13px}
   .meta{font-size:13px;line-height:1.5}
   .price{font-weight:700;font-size:15px;color:var(--accent)}
+  .fin{color:#9a3412;font-size:12.5px}
   .tag{display:inline-block;background:#f1f5f9;border-radius:6px;padding:2px 7px;font-size:12px;margin:2px 2px 0 0}
   .links{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:8px;border-top:1px solid var(--line)}
   .links a{font-size:12.5px;text-decoration:none;border:1px solid var(--line);padding:6px 9px;border-radius:8px;color:var(--accent)}
   .links a:hover{background:#f8fafc}
   .note{font-size:12px;color:var(--muted);background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:8px 10px;margin-top:4px}
+  /* calculator */
+  #calc{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;margin:22px 0}
+  #calc h2{margin:0 0 4px;font-size:19px;color:var(--accent)}
+  #calc .sub{color:var(--muted);font-size:13px;margin:0 0 14px}
+  .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:760px){.calc-grid{grid-template-columns:1fr}}
+  .inp{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:9px;font-size:13.5px}
+  .inp label{color:#334155}
+  .inp input{width:130px;padding:7px 9px;border:1px solid var(--line);border-radius:8px;font-size:13.5px;text-align:right}
+  .inp.chk{justify-content:flex-start;gap:8px}
+  .res{background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:14px}
+  .res .row{display:flex;justify-content:space-between;padding:6px 0;font-size:13.5px;border-bottom:1px dashed #e2e8f0}
+  .res .row:last-child{border-bottom:none}
+  .res .row b{color:var(--accent)}
+  .res .big{font-size:16px;margin-top:6px;padding-top:10px;border-top:2px solid var(--accent)}
+  .res .pos{color:#166534;font-weight:700}.res .neg{color:#b91c1c;font-weight:700}
+  .disc{font-size:11.5px;color:var(--muted);margin-top:10px}
   footer{color:var(--muted);font-size:12px;text-align:center;padding:24px}
 </style>
 </head>
@@ -58,14 +76,37 @@
     <button class="lshop" data-poi="shop">🏪 Магазины</button>
     <button class="lkinder" data-poi="kinder">🧒 Детсады</button>
   </div>
-  <div id="poihint">Включи слой и приблизь карту к объекту (zoom ≥ 13), чтобы увидеть остановки, станции, школы, магазины и детсады поблизости. Данные — OpenStreetMap.</div>
+  <div id="poihint">Включи слой и приблизь карту к объекту (zoom ≥ 13). Данные — OpenStreetMap.</div>
 
   <div class="filters" id="filters"></div>
   <div class="count" id="count"></div>
   <div class="grid" id="grid"></div>
-  <p class="note">⚠️ Фото и актуальное наличие/цены — по кнопкам «Сайт застройщика» и «Портал» в каждой карточке (в статической странице они не вшиты, т.к. меняются). Маркеры объектов — ориентир по локалитету, не точный участок. На карте — только дома/близняки (квартиры исключены).</p>
+  <p class="note">⚠️ Фото и актуальное наличие/цены — по кнопкам «Сайт застройщика» и «Портал». Маркеры объектов — ориентир по локалитету. На карте только дома/близняки (квартиры исключены). «Отделка» — ориентир ~1 750 zł/м², НЕ входит в бюджет ≤900k.</p>
+
+  <!-- ====== КАЛЬКУЛЯТОР ====== -->
+  <section id="calc">
+    <h2>🧮 Калькулятор сделки</h2>
+    <p class="sub">Обычная ипотека (госпрограмма RKM паре подруг, скорее всего, не положена). Меняй цифры — расчёт обновляется сразу.</p>
+    <div class="calc-grid">
+      <div>
+        <div class="inp"><label>Цена объекта (вкл. парковку), zł</label><input id="i_price" type="number" value="739000"></div>
+        <div class="inp"><label>Оформление (нотариус/вписи), zł</label><input id="i_close" type="number" value="12000"></div>
+        <div class="inp"><label>Отделка (отдельно), zł</label><input id="i_fin" type="number" value="144000"></div>
+        <div class="inp"><label>Первый взнос, %</label><input id="i_down" type="number" value="15"></div>
+        <div class="inp"><label>Ставка, % годовых</label><input id="i_rate" type="number" step="0.1" value="6.5"></div>
+        <div class="inp"><label>Срок кредита, лет</label><input id="i_term" type="number" value="30"></div>
+        <div class="inp"><label>Прочие расходы/мес (opłata+коммуналка+податок), zł</label><input id="i_other" type="number" value="1050"></div>
+        <div class="inp"><label>Рост цены, % в год</label><input id="i_growth" type="number" step="0.1" value="5"></div>
+        <div class="inp"><label>Горизонт выхода, лет</label><input id="i_hor" type="number" value="5"></div>
+        <div class="inp"><label>Аренда (если сдавать), zł/мес</label><input id="i_rent" type="number" value="4500"></div>
+        <div class="inp chk"><input id="i_tax" type="checkbox" checked><label>продажа до 5 лет → налог PIT 19% с прироста</label></div>
+      </div>
+      <div class="res" id="res"></div>
+    </div>
+    <p class="disc">Расчёт ориентировочный. «Денежный результат» считает все платежи по кредиту как расход (вы бы платили аренду в любом случае — реальная выгода обычно выше). Налог: база = цена+отделка+оформление; освобождение при продаже после 5 лет или реинвесте. Не является финансовой консультацией.</p>
+  </section>
 </div>
-<footer>Источник данных: сайты застройщиков и порталы (rynekpierwotny, otodom, tabelaofert, nieruchomosci-online) + POI OpenStreetMap. Не оферта.</footer>
+<footer>Источник: сайты застройщиков и порталы + POI OpenStreetMap. Не оферта.</footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
@@ -108,20 +149,25 @@ const map=L.map('map').setView([52.09,20.90],11);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(map);
 const markers={};
 function gmaps(o){return "https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(o.loc+" "+o.name+" "+o.gmina);}
+function finText(o){
+  if(o.tags.join(" ").match(/под ключ/i)||(o.done||"").match(/pod klucz/i))return "🔨 отделка включена";
+  const m=o.area.match(/\d+/);if(!m)return "";
+  return "🔨 отделка ~"+Math.round(parseInt(m[0])*1750/1000)+"k zł (отдельно)";
+}
 function render(filter){
-  const grid=document.getElementById('grid');grid.innerHTML="";
-  let n=0;
+  const grid=document.getElementById('grid');grid.innerHTML="";let n=0;
   OBJ.forEach(o=>{
     if(filter!=="all"&&o.status!==filter)return;n++;
     const [lbl,cls]=LABELS[o.status];
     const tags=o.tags.map(t=>`<span class="tag">${t}</span>`).join(" ");
+    const ft=finText(o);
     const card=document.createElement('div');card.className="card";card.id="card"+o.id;
     card.innerHTML=`<span class="badge ${cls}">${lbl}</span>
       <h3>${o.name}</h3><div class="dev">${o.dev}</div>
       <div class="meta">📍 ${o.loc} <span style="color:#94a3b8">(гм. ${o.gmina})</span><br>
       🏠 ${o.type} · ${o.area}<br>
       <span class="price">💰 ${o.price}</span> ${o.entry?`· <span style="color:#64748b">${o.entry}</span>`:""}<br>
-      🗓 ${o.done}</div>
+      🗓 ${o.done}${ft?`<br><span class="fin">${ft}</span>`:""}</div>
       <div>${tags}</div>
       <div class="links">
         <a href="${o.site}" target="_blank" rel="noopener">🌐 Сайт застройщика</a>
@@ -131,9 +177,8 @@ function render(filter){
       </div>`;
     grid.appendChild(card);
     if(!markers[o.id]){
-      const m=L.marker([o.lat,o.lng]).addTo(map)
+      markers[o.id]=L.marker([o.lat,o.lng]).addTo(map)
         .bindPopup(`<b>${o.name}</b><br>${o.loc}<br>${o.price}<br><a href="${o.site}" target="_blank">Сайт →</a>`);
-      markers[o.id]=m;
     }
   });
   document.getElementById('count').textContent=`Показано объектов: ${n} из ${OBJ.length}`;
@@ -147,49 +192,103 @@ const fbar=document.getElementById('filters');
 });
 render("all");
 
-/* ---------- POI слои (OpenStreetMap / Overpass) ---------- */
+/* ---------- POI слои (OpenStreetMap / Overpass) — один объединённый запрос + дебаунс + запасной сервер ---------- */
 const POI={
   transport:{color:"#2563eb",layer:L.layerGroup(),q:'node["highway"="bus_stop"](BB);node["railway"~"^(station|halt|tram_stop)$"](BB);node["station"="subway"](BB);'},
   school:{color:"#dc2626",layer:L.layerGroup(),q:'node["amenity"="school"](BB);way["amenity"="school"](BB);'},
   shop:{color:"#16a34a",layer:L.layerGroup(),q:'node["shop"~"^(supermarket|convenience)$"](BB);way["shop"~"^(supermarket|convenience)$"](BB);'},
   kinder:{color:"#d97706",layer:L.layerGroup(),q:'node["amenity"="kindergarten"](BB);way["amenity"="kindergarten"](BB);'},
 };
-const active=new Set();
-const hint=document.getElementById('poihint');
-async function loadPOI(key){
-  const g=POI[key];const b=map.getBounds();
-  const bb=`${b.getSouth().toFixed(5)},${b.getWest().toFixed(5)},${b.getNorth().toFixed(5)},${b.getEast().toFixed(5)}`;
-  const query=`[out:json][timeout:25];(${g.q.replaceAll("BB",bb)});out center 200;`;
-  const url="https://overpass-api.de/api/interpreter?data="+encodeURIComponent(query);
-  try{
-    const res=await fetch(url);const data=await res.json();
-    g.layer.clearLayers();
-    data.elements.forEach(el=>{
-      const lat=el.lat||(el.center&&el.center.lat),lng=el.lon||(el.center&&el.center.lon);
-      if(!lat)return;
-      const t=el.tags||{};const name=t.name||t.operator||"";
-      L.circleMarker([lat,lng],{radius:5,weight:1,color:"#fff",fillColor:g.color,fillOpacity:0.9})
-        .bindTooltip(name||key,{direction:"top"}).addTo(g.layer);
-    });
-  }catch(e){console.warn("Overpass error",e);}
+const EPs=["https://overpass-api.de/api/interpreter","https://overpass.kumi.systems/api/interpreter"];
+const active=new Set();const hint=document.getElementById('poihint');
+let poiTimer=null,poiCtrl=null;
+function scheduleLoad(){clearTimeout(poiTimer);poiTimer=setTimeout(loadPOI,650);}
+function catOf(t){
+  if(!t)return null;
+  if(t.highway==="bus_stop"||/^(station|halt|tram_stop)$/.test(t.railway||"")||t.station==="subway")return "transport";
+  if(t.amenity==="school")return "school";
+  if(/^(supermarket|convenience)$/.test(t.shop||""))return "shop";
+  if(t.amenity==="kindergarten")return "kinder";
+  return null;
 }
-function refreshActive(){
+async function loadPOI(){
   if(active.size===0)return;
-  if(map.getZoom()<13){hint.textContent="🔎 Приблизь карту (zoom ≥ 13), чтобы загрузить точки выбранных слоёв.";return;}
-  hint.textContent="Загружаю точки из OpenStreetMap…";
-  Promise.all([...active].map(loadPOI)).then(()=>{hint.textContent="Готово. Двигай карту — точки обновятся под видимую область.";});
+  if(map.getZoom()<13){hint.textContent="🔎 Приблизь карту (zoom ≥ 13), чтобы загрузить точки.";return;}
+  const b=map.getBounds();
+  const bb=`${b.getSouth().toFixed(4)},${b.getWest().toFixed(4)},${b.getNorth().toFixed(4)},${b.getEast().toFixed(4)}`;
+  let body="";active.forEach(k=>{body+=POI[k].q.replaceAll("BB",bb);});
+  const q=`[out:json][timeout:25];(${body});out center 150;`;
+  if(poiCtrl)poiCtrl.abort();poiCtrl=new AbortController();
+  hint.textContent="⏳ Загружаю точки из OpenStreetMap…";
+  for(const ep of EPs){
+    try{
+      const res=await fetch(ep+"?data="+encodeURIComponent(q),{signal:poiCtrl.signal});
+      if(!res.ok)throw 0;
+      const data=await res.json();
+      active.forEach(k=>POI[k].layer.clearLayers());
+      let cnt=0;
+      data.elements.forEach(el=>{
+        const cat=catOf(el.tags);if(!cat||!active.has(cat))return;
+        const lat=el.lat||(el.center&&el.center.lat),lng=el.lon||(el.center&&el.center.lon);if(!lat)return;
+        const name=(el.tags&&(el.tags.name||el.tags.operator))||"";
+        L.circleMarker([lat,lng],{radius:5,weight:1,color:"#fff",fillColor:POI[cat].color,fillOpacity:0.9})
+          .bindTooltip(name||cat,{direction:"top"}).addTo(POI[cat].layer);
+        cnt++;
+      });
+      hint.textContent=`✅ Точек на карте: ${cnt}. Двигай карту — обновится.`;
+      return;
+    }catch(e){if(e&&e.name==="AbortError")return;}
+  }
+  hint.textContent="⚠️ OpenStreetMap не ответил — подвигай карту, чтобы повторить.";
 }
 document.querySelectorAll('.layers button').forEach(btn=>{
-  btn.onclick=()=>{
-    const key=btn.dataset.poi;
+  btn.onclick=()=>{const key=btn.dataset.poi;
     if(active.has(key)){active.delete(key);btn.classList.remove("on");map.removeLayer(POI[key].layer);}
-    else{active.add(key);btn.classList.add("on");POI[key].layer.addTo(map);
-      if(map.getZoom()<13){map.setView([52.089,20.90],14);}
-      loadPOI(key);}
-    refreshActive();
-  };
+    else{active.add(key);btn.classList.add("on");POI[key].layer.addTo(map);if(map.getZoom()<13)map.setView(map.getCenter(),14);}
+    scheduleLoad();};
 });
-map.on('moveend',refreshActive);
+map.on('moveend',()=>{if(active.size)scheduleLoad();});
+
+/* ---------- Калькулятор сделки ---------- */
+const fmt=n=>Math.round(n).toLocaleString('pl-PL')+" zł";
+const ids=["i_price","i_close","i_fin","i_down","i_rate","i_term","i_other","i_growth","i_hor","i_rent","i_tax"];
+function calc(){
+  const v=id=>parseFloat(document.getElementById(id).value)||0;
+  const price=v("i_price"),close=v("i_close"),fin=v("i_fin"),downPct=v("i_down"),rate=v("i_rate"),
+        term=v("i_term"),other=v("i_other"),growth=v("i_growth"),hor=v("i_hor"),rent=v("i_rent"),
+        taxOn=document.getElementById("i_tax").checked;
+  const down=price*downPct/100, credit=Math.max(0,price-down);
+  const r=rate/100/12, n=term*12, k=Math.min(hor*12,n);
+  const rata = r>0 ? credit*r/(1-Math.pow(1+r,-n)) : credit/n;
+  const monthly = rata+other;
+  const cashStart = down+close+fin;
+  const fv = price*Math.pow(1+growth/100,hor);
+  const balance = r>0 ? credit*(Math.pow(1+r,n)-Math.pow(1+r,k))/(Math.pow(1+r,n)-1) : credit*(1-k/n);
+  const basis = price+fin+close;
+  const tax = (taxOn && hor<5) ? 0.19*Math.max(0,fv-basis) : 0;
+  const netCash = fv-balance-tax;                 // на руках после продажи и кредита
+  const equityGrow = netCash-cashStart;           // сверх стартового кэша (без учёта платежей)
+  const totalOut = cashStart + (rata+other)*k;    // всё вложено за период
+  const cashResult = netCash - totalOut;          // денежный результат (платежи как расход)
+  const yieldG = rent*12/(price+fin+close)*100;   // брутто-доходность аренды
+  const cashflow = rent-rata-other;               // поток при сдаче
+  const cls=x=>x>=0?"pos":"neg";
+  document.getElementById("res").innerHTML=`
+    <div class="row"><span>Кредит</span><b>${fmt(credit)}</b></div>
+    <div class="row"><span>Ежемесячный платёж</span><b>${fmt(rata)}</b></div>
+    <div class="row"><span>Полная нагрузка/мес (+ расходы)</span><b>${fmt(monthly)}</b></div>
+    <div class="row"><span>💵 Кэш на старте (взнос+оформл+отделка)</span><b>${fmt(cashStart)}</b></div>
+    <div class="row" style="margin-top:6px"><span>Стоимость через ${hor} лет (рост ${growth}%/год)</span><b>${fmt(fv)}</b></div>
+    <div class="row"><span>Остаток кредита</span><b>${fmt(balance)}</b></div>
+    ${tax>0?`<div class="row"><span>Налог PIT 19% (продажа &lt;5 лет)</span><b>−${fmt(tax)}</b></div>`:``}
+    <div class="row"><span>На руках после продажи и кредита</span><b>${fmt(netCash)}</b></div>
+    <div class="row big"><span>📈 Рост капитала сверх стартового кэша</span><span class="${cls(equityGrow)}">${equityGrow>=0?"+":""}${fmt(equityGrow)}</span></div>
+    <div class="row"><span>Денежный результат (платежи как расход)</span><span class="${cls(cashResult)}">${cashResult>=0?"+":""}${fmt(cashResult)}</span></div>
+    <div class="row" style="margin-top:6px"><span>🏠 Если сдавать: брутто-доходность</span><b>${yieldG.toFixed(1)}%/год</b></div>
+    <div class="row"><span>🏠 Денежный поток аренды/мес</span><span class="${cls(cashflow)}">${cashflow>=0?"+":""}${fmt(cashflow)}</span></div>`;
+}
+ids.forEach(id=>document.getElementById(id).addEventListener("input",calc));
+calc();
 </script>
 </body>
 </html>
