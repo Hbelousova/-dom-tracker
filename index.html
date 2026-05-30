@@ -228,6 +228,8 @@ const OBJ = [
    site:"https://www.otodom.pl/pl/oferta/bezposrednio-nowoczesny-dom-bez-pcc-i-prowizji-z-ogrodem-i-kanalizacja-ID4Bdga",portal:"https://www.otodom.pl/pl/oferta/bezposrednio-nowoczesny-dom-bez-pcc-i-prowizji-z-ogrodem-i-kanalizacja-ID4Bdga"},
  {id:40,status:"look",name:"Дом 93 м² двухэтажный с поддашем",dev:"уточнить",loc:"Lesznowola",gmina:"Lesznowola",type:"дом",area:"93 м²",price:"≤950k (по ссылке)",entry:"—",done:"уточнить",tags:["Otodom-находка"],lat:52.0720,lng:20.9280,
    site:"https://www.otodom.pl/pl/oferta/dwukondygnacyjny-dom-jednorodzinny-z-poddaszem-ID4wTBR",portal:"https://www.otodom.pl/pl/oferta/dwukondygnacyjny-dom-jednorodzinny-z-poddaszem-ID4wTBR"},
+ {id:41,status:"prio",name:"Дом wolnostojący у леса (Słomin)",dev:"уточнить (агентство Platforma Mieszk.)",loc:"Słomin",gmina:"Raszyn",type:"дом отдельностоящий",area:"102,4 м²",price:"889k",entry:"⭐ отдельностоящий + насос + у леса",done:"доступен VII.2027",tags:["⭐ отдельностоящий — соседей по стенам нет","у леса/луга — вид на зелень","тепловой насос + кондиционер"],lat:52.0895,lng:20.9005,
+   site:"https://slomin.nieruchomosci-online.pl/dom-wolnostojacy,deweloperski/26590583.html",portal:"https://slomin.nieruchomosci-online.pl/dom-wolnostojacy,deweloperski/26590583.html"},
 ];
 const INVEST={
  1:{g:3,r:3,why:"Надёжный девелопер + осиедле с детсадом/магазином/спортзалом = магнит для аренды и ликвидность."},
@@ -244,7 +246,8 @@ const INVEST={
  20:{g:3,r:2,why:"Ronson — биржевой девелопер: лучшая ликвидность и защита цены при перепродаже."},
  24:{g:2,r:2},
  26:{g:2,r:3,why:"Готов к заезду — сразу жить или сдавать; у леса в Magdalenka, рядом 3M."},
- 28:{g:2,r:3,why:"Готовый сегмент в осиедле Novisa у 3M — быстрый въезд/аренда; вторичка без премии за новизну."}
+ 28:{g:2,r:3,why:"Готовый сегмент в осиедле Novisa у 3M — быстрый въезд/аренда; вторичка без премии за новизну."},
+ 41:{g:2,r:3,why:"Отдельностоящий + насос + у леса в Słomin (у 3M) — топ под приватность/коммуналку; минус — VII.2027 и крошечный участок."}
 };
 const LINKS={
  1:"https://www.otodom.pl/pl/inwestycja/nova-magdalenka-7-ID4vooT",
@@ -272,7 +275,8 @@ const LINKS={
  37:"https://www.otodom.pl/pl/oferta/nowoczesny-dom-107m2-klimatyzacja-duzy-ogrodek-219m2-lokal-ID4z0Fb",
  38:"https://www.otodom.pl/pl/oferta/ostatni-segment-ogrodek-dwa-miejsca-parkingowe-segment-1b-ID4vY7o",
  39:"https://www.otodom.pl/pl/oferta/bezposrednio-nowoczesny-dom-bez-pcc-i-prowizji-z-ogrodem-i-kanalizacja-ID4Bdga",
- 40:"https://www.otodom.pl/pl/oferta/dwukondygnacyjny-dom-jednorodzinny-z-poddaszem-ID4wTBR"
+ 40:"https://www.otodom.pl/pl/oferta/dwukondygnacyjny-dom-jednorodzinny-z-poddaszem-ID4wTBR",
+ 41:"https://slomin.nieruchomosci-online.pl/dom-wolnostojacy,deweloperski/26590583.html"
 };
 const OFFER={
  1:{u:"3к 66 м² — 619k · 3к 73 м² — 639k · 4к 82 м² — 699–739k · 4–5к 92 м² — 849k",v:"✅ В бюджет: 66–82 м² (619–739k) + парковка",f:["+ парковка 40k (обязательна)","czynsz ~250 zł/мес","stan deweloperski","сдача I кв. 2027","детсад + магазин + спортзал на осиедли","эскроу otwarty MRP"]},
@@ -292,7 +296,8 @@ const OFFER={
  31:{u:"у леса Młochowskiego — 850k",v:"✅ В бюджет",f:["рядом 3M","у леса","вторичка"]},
  32:{u:"дом ~144 м² — 949k",v:"⚠ На грани бюджета",f:["свежее объявление","тихо/зелено, Stara Wieś"]},
  35:{u:"4 комнаты, 74,14 м², участок 134 м² — 649k",v:"✅ В бюджет, готов ~через месяц",f:["первичка — без PCC","⚠ участок всего 134 м² (узкий сегмент, мало сада)","🚩 в шапке 649k, в описании «749k промо» — уточнить реальную цену","у Ikea Janki, рядом Stawy Raszyńskie","продажа через Expander — уточнить застройщика и отопление"]},
- 27:{u:"Patio 80 м² — 728–744k · Living 92 м² — 810–819k (4 комн, 2 уровня, вкл. 2 парковки)",v:"✅ в бюджете; ⭐ приватность (атриум); ⚠ сдача 2028",f:["⭐ атриальные — сады ОТДЕЛЕНЫ от соседей, окна во двор","тёплый пол на ГАЗЕ, силикат, потолки 280 см","2 парковочных места включены (по 14k)","эскроу rachunek powierniczy + DFG ✓","⚠ сдача I этапа — 2028 (поздно под «заезд за год»)","доступно 7 домов (C1–C4, D1, D3, D4)","Stachowo, gmina Lesznowola, у S7/S8"]}
+ 27:{u:"Patio 80 м² — 728–744k · Living 92 м² — 810–819k (4 комн, 2 уровня, вкл. 2 парковки)",v:"✅ в бюджете; ⭐ приватность (атриум); ⚠ сдача 2028",f:["⭐ атриальные — сады ОТДЕЛЕНЫ от соседей, окна во двор","тёплый пол на ГАЗЕ, силикат, потолки 280 см","2 парковочных места включены (по 14k)","эскроу rachunek powierniczy + DFG ✓","⚠ сдача I этапа — 2028 (поздно под «заезд за год»)","доступно 7 домов (C1–C4, D1, D3, D4)","Stachowo, gmina Lesznowola, у S7/S8"]},
+ 41:{u:"отдельностоящий дом 102,4 м², 4 комн (3 спальни), 2 санузла — 889k",v:"✅ В бюджет; ⭐ приватность + насос + у леса",f:["⭐ ОТДЕЛЬНОСТОЯЩИЙ — нет общих стен, никого сверху","⭐ тепловой насос + кондиционер (низкие счета)","⭐ у леса/луга — вид на зелень, не в соседей","⚠ участок крошечный 120 м² (сад ~73 м²)","⚠ доступен VII.2027 (чуть больше года)","гараж отдельный; stan deweloperski; продажа через агентство — уточнить застройщика/prowizję"]}
 };
 const LABELS={prio:["🟢 Приоритет","b-prio"],look:["🟡 Смотрим","b-look"],check:["🔵 Проверить","b-check"],res:["⚪ Резерв","b-res"],sec:["🔁 Вторичка","b-sec"]};
 const map=L.map('map').setView([52.09,20.90],11);
@@ -331,7 +336,7 @@ const QFULL={
 };
 const VIEWQ=["🏠 Сколько общих стен — сосед с 1 стороны или с 2? крайний ли это сегмент/близняк? (нет ли соседей сверху — это дом, не квартира)","👀 Что выходит на окна и сад — зелень/лес/парк или окна соседей? есть ли сосед сзади?"];
 function askBlock(o){const core=QFULL[o.id]||((ASK[o.id]||[]).concat(o.status==="sec"?BASE_SEC:BASE));const q=core.concat(VIEWQ);return `<details class="ask"><summary>❓ Что спросить у девелопера (${q.length})</summary><ul>${q.map(i=>"<li>"+i+"</li>").join("")}</ul></details>`;}
-const HEAT={1:{t:"газ",c:"gas"},2:{t:"тепл. насос + PV",c:"good"},3:{t:"тепл. насос + PV",c:"good"},4:{t:"тепл. насос + PV (A+)",c:"good"},11:{t:"тепловой насос",c:"good"},19:{t:"тепловой насос",c:"good"},23:{t:"тепл. насос + PV",c:"good"},25:{t:"тепловой насос",c:"good"},20:{t:"газ (уточнить)",c:"gas"},24:{t:"газ (уточнить)",c:"gas"},27:{t:"газ (тёплый пол)",c:"gas"},28:{t:"газ",c:"gas"}};
+const HEAT={1:{t:"газ",c:"gas"},2:{t:"тепл. насос + PV",c:"good"},3:{t:"тепл. насос + PV",c:"good"},4:{t:"тепл. насос + PV (A+)",c:"good"},11:{t:"тепловой насос",c:"good"},19:{t:"тепловой насос",c:"good"},23:{t:"тепл. насос + PV",c:"good"},25:{t:"тепловой насос",c:"good"},20:{t:"газ (уточнить)",c:"gas"},24:{t:"газ (уточнить)",c:"gas"},27:{t:"газ (тёплый пол)",c:"gas"},28:{t:"газ",c:"gas"},41:{t:"тепл. насос + кондиц.",c:"good"}};
 function heatBadge(o){const x=HEAT[o.id]||{t:"отопление: уточнить",c:"na"};return `<span class="heat heat-${x.c}">🔥 ${x.t}</span>`;}
 function neighInfo(o){const s=(o.type+" "+o.name+" "+(o.tags||[]).join(" ")).toLowerCase();
  if(/2-локальн|dwulokal|сосед сверху|по этажу/.test(s))return {t:"2-локальный — сосед сверху/снизу",c:"warn"};
