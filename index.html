@@ -200,7 +200,7 @@ const OBJ = [
    site:"https://www.otodom.pl/pl/wyniki/sprzedaz/dom,rynek-pierwotny/mazowieckie/piaseczynski/lesznowola?priceMax=950000",portal:"https://www.otodom.pl/pl/wyniki/sprzedaz/dom,rynek-pierwotny/mazowieckie/piaseczynski/lesznowola?priceMax=950000"},
  {id:26,status:"check",name:"Готовый сегмент Magdalenka (OLX)",dev:"частное / уточнить",loc:"Magdalenka",gmina:"Lesznowola",type:"сегмент (крайний)",area:"уточнить",price:"898k",entry:"✅ ГОТОВ к заезду, у леса",done:"готов",tags:["OLX-находка","готов — заезд сразу","у 3M"],lat:52.0640,lng:20.8830,
    site:"https://www.otodom.pl/pl/oferta/gotowy-ostatni-skrajny-segment-pod-lasem-super-lokalizacja-warszawa-ID4AROn",portal:"https://www.otodom.pl/pl/oferta/gotowy-ostatni-skrajny-segment-pod-lasem-super-lokalizacja-warszawa-ID4AROn"},
- {id:27,status:"look",name:"Solis Park (Vaxa)",dev:"Vaxa Development",loc:"Stachowo, ul. Rycerska",gmina:"Lesznowola (уточнить)",type:"дом атриальный",area:"30 домов",price:"от 8 500 zł/м²",entry:"⭐ атриальные — окна во двор, не в соседей",done:"в продаже (старт 2026)",tags:["атриальный — приватность","окна во внутренний двор","частные сады"],lat:52.0600,lng:20.8700,
+ {id:27,status:"look",name:"Solis Park (Vaxa)",dev:"Vaxa Development",loc:"Stachowo (gmina Lesznowola)",gmina:"Lesznowola",type:"дом атриальный (2 ур.)",area:"80–92 м²",price:"728–819k (вкл. 2 парк.)",entry:"⭐ приватность (атриум); ⚠ сдача 2028",done:"I этап 2028",tags:["⭐ атриум — сады отделены от соседей","4 комн, 2 уровня","тёплый пол (газ)"],lat:52.0600,lng:20.8700,
    site:"https://vaxa.pl/",portal:"https://www.otodom.pl/pl/inwestycja/solis-park-nowoczesne-domy-z-prywatnymi-ogrodami-pod-warszawa-ID4BpVN"},
  {id:28,status:"sec",name:"Nova Magdalenka 5 — сегмент 73 м²",dev:"вторичка (перепродажа)",loc:"Słomin",gmina:"Raszyn",type:"сегмент",area:"73 м²",price:"680k",entry:"⭐ у 3M, под аранжировку",done:"готов",tags:["вторичка","осиедле Novisa","дом — czynsz низкий*"],lat:52.0890,lng:20.9000,
    site:"https://www.otodom.pl/pl/oferta/nova-magdalenka-5-segment-73-m2-gotowy-do-wlasnej-aranzacji-ID4xW1d",portal:"https://www.otodom.pl/pl/oferta/nova-magdalenka-5-segment-73-m2-gotowy-do-wlasnej-aranzacji-ID4xW1d"},
@@ -290,7 +290,7 @@ const OFFER={
  31:{u:"у леса Młochowskiego — 850k",v:"✅ В бюджет",f:["рядом 3M","у леса","вторичка"]},
  32:{u:"дом ~144 м² — 949k",v:"⚠ На грани бюджета",f:["свежее объявление","тихо/зелено, Stara Wieś"]},
  35:{u:"4 комнаты, 74,14 м², участок 134 м² — 649k",v:"✅ В бюджет, готов ~через месяц",f:["первичка — без PCC","⚠ участок всего 134 м² (узкий сегмент, мало сада)","🚩 в шапке 649k, в описании «749k промо» — уточнить реальную цену","у Ikea Janki, рядом Stawy Raszyńskie","продажа через Expander — уточнить застройщика и отопление"]},
- 27:{u:"30 домов атриальных, от 8 500 zł/м² (~765k за 90 м²)",v:"✅ в бюджет; ⭐ приватность (атриум)",f:["⭐ атриальный дом — окна во ВНУТРЕННИЙ двор, НЕ в соседей","частные сады","ранний старт продаж 2026 — лучшие цены на старте","застройщик Vaxa Development — vaxa.pl","Stachowo — уточнить точную гмину и время до 3M"]}
+ 27:{u:"Patio 80 м² — 728–744k · Living 92 м² — 810–819k (4 комн, 2 уровня, вкл. 2 парковки)",v:"✅ в бюджете; ⭐ приватность (атриум); ⚠ сдача 2028",f:["⭐ атриальные — сады ОТДЕЛЕНЫ от соседей, окна во двор","тёплый пол на ГАЗЕ, силикат, потолки 280 см","2 парковочных места включены (по 14k)","эскроу rachunek powierniczy + DFG ✓","⚠ сдача I этапа — 2028 (поздно под «заезд за год»)","доступно 7 домов (C1–C4, D1, D3, D4)","Stachowo, gmina Lesznowola, у S7/S8"]}
 };
 const LABELS={prio:["🟢 Приоритет","b-prio"],look:["🟡 Смотрим","b-look"],check:["🔵 Проверить","b-check"],res:["⚪ Резерв","b-res"],sec:["🔁 Вторичка","b-sec"]};
 const map=L.map('map').setView([52.09,20.90],11);
@@ -329,7 +329,7 @@ const QFULL={
 };
 const VIEWQ=["🏠 Сколько общих стен — сосед с 1 стороны или с 2? крайний ли это сегмент/близняк? (нет ли соседей сверху — это дом, не квартира)","👀 Что выходит на окна и сад — зелень/лес/парк или окна соседей? есть ли сосед сзади?"];
 function askBlock(o){const core=QFULL[o.id]||((ASK[o.id]||[]).concat(o.status==="sec"?BASE_SEC:BASE));const q=core.concat(VIEWQ);return `<details class="ask"><summary>❓ Что спросить у девелопера (${q.length})</summary><ul>${q.map(i=>"<li>"+i+"</li>").join("")}</ul></details>`;}
-const HEAT={1:{t:"газ",c:"gas"},2:{t:"тепл. насос + PV",c:"good"},3:{t:"газ",c:"gas"},11:{t:"тепловой насос",c:"good"},19:{t:"тепловой насос",c:"good"},20:{t:"газ",c:"gas"},24:{t:"газ",c:"gas"},28:{t:"газ",c:"gas"}};
+const HEAT={1:{t:"газ",c:"gas"},2:{t:"тепл. насос + PV",c:"good"},3:{t:"газ",c:"gas"},11:{t:"тепловой насос",c:"good"},19:{t:"тепловой насос",c:"good"},20:{t:"газ",c:"gas"},24:{t:"газ",c:"gas"},27:{t:"газ (тёплый пол)",c:"gas"},28:{t:"газ",c:"gas"}};
 function heatBadge(o){const x=HEAT[o.id]||{t:"отопление: уточнить",c:"na"};return `<span class="heat heat-${x.c}">🔥 ${x.t}</span>`;}
 function neighInfo(o){const s=(o.type+" "+o.name+" "+(o.tags||[]).join(" ")).toLowerCase();
  if(/крайн|skrajn|ostatni segment/.test(s))return {t:"крайний сегмент — сосед с 1 стороны",c:"good"};
