@@ -41,6 +41,11 @@
   .fin{color:#9a3412;font-size:12.5px}
   .inv{color:#1f4e78;font-weight:600;font-size:12.5px}
   .why{color:#475569;font-size:11.5px;font-style:italic}
+  .offer{background:#f0f7ff;border:1px solid #cfe3f7;border-radius:8px;padding:8px 10px;margin-top:6px}
+  .offer-u{font-weight:700;font-size:12.5px;color:#0f3d63}
+  .offer-v{font-size:12.5px;margin:3px 0;color:#166534;font-weight:700}
+  .offer-f{margin:4px 0 0;padding-left:16px;font-size:12px;color:#334155}
+  .offer-f li{margin:1px 0}
   .tag{display:inline-block;background:#f1f5f9;border-radius:6px;padding:2px 7px;font-size:12px;margin:2px 2px 0 0}
   .links{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:8px;border-top:1px solid var(--line)}
   .links a{font-size:12.5px;text-decoration:none;border:1px solid var(--line);padding:6px 9px;border-radius:8px;color:var(--accent)}
@@ -222,6 +227,16 @@ const LINKS={
  33:"https://www.otodom.pl/pl/oferta/twoj-dom-20-minut-od-warszawy-cisza-spokoj-las-stan-deweloperski-ID4AkUU",
  34:"https://www.otodom.pl/pl/oferta/segment-skrajny-ogrodek-male-osiedle-wladyslawow-ID4BaMe"
 };
+const OFFER={
+ 1:{u:"3к 66 м² — 619k · 3к 73 м² — 639k · 4к 82 м² — 699–739k · 4–5к 92 м² — 849k",v:"✅ В бюджет: 66–82 м² (619–739k) + парковка",f:["+ парковка 40k (обязательна)","czynsz ~250 zł/мес","stan deweloperski","сдача I кв. 2027","детсад + магазин + спортзал на осиедли","эскроу otwarty MRP"]},
+ 2:{u:"4к 89 м² — от 739k (осталось ~4 дома)",v:"✅ В бюджет (~739k)",f:["эко-отопление + фотовольтаика (низкие счета)","сдача wrzesień 2026","магазин 2 мин · школа 3 мин","⚠ 42 дефекта на приёмке — нужна инспекция"]},
+ 3:{u:"5к, 65–171 м², от 8 140 zł/м² (от ~659k)",v:"✅ В бюджет на меньшем метраже",f:["отопление: газ","Stara Wieś, рядом 3M","застройщик Ebejot"]},
+ 11:{u:"сегменты 85–115 м², от ~819k",v:"✅ В бюджет",f:["отопление: ТЕПЛОВОЙ НАСОС (низкая коммуналка)","сдача etap II ~VI.2026","гмина Raszyn — дёшево, у 3M"]},
+ 12:{u:"близняк/шеренг. 103–120 м², 895k–1,17 млн",v:"⚠ В бюджет только младший ~895k",f:["застройщик DPM Invest (опытный, этап I 2021–23)","узел S8 рядом","доступно 4 близняка + 4 шеренговца"]},
+ 19:{u:"5к, 72–94 м², от 8 900 zł/м² (~640–840k)",v:"✅ В бюджет (72–94 м²)",f:["отопление: ТЕПЛОВОЙ НАСОС (низкая коммуналка)","вплотную к Słomin / Nova Magdalenka / 3M","застройщик MK Residential"]},
+ 20:{u:"до 98 м², 4к, от 9 727 zł/м² (~950k)",v:"⚠ На грани/выше бюджета (~950k)",f:["отопление: газ","Ronson — крупный биржевой девелопер (надёжность/ликвидность)","Falenty Nowe, у 3M"]},
+ 28:{u:"сегмент 73 м² — 680k (вторичка)",v:"✅ В бюджет, готов",f:["под собственную аранжировку","осиедле Novisa у 3M","дом — czynsz низкий/нулевой"]}
+};
 const LABELS={prio:["🟢 Приоритет","b-prio"],look:["🟡 Смотрим","b-look"],check:["🔵 Проверить","b-check"],res:["⚪ Резерв","b-res"],sec:["🔁 Вторичка","b-sec"]};
 const map=L.map('map').setView([52.09,20.90],11);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(map);
@@ -236,6 +251,7 @@ function finText(o){
 function invBlock(o){const v=INVEST[o.id];if(!v)return"";const s=n=>"★".repeat(n)+"☆".repeat(3-n);return `<br><span class="inv">📈 ${s(v.g)} · 🔑 ${s(v.r)}</span>${v.why?`<br><span class="why">${v.why}</span>`:""}`;}
 const STATUS_COLOR={prio:"#16a34a",look:"#d97706",check:"#2563eb",res:"#94a3b8",sec:"#7c3aed"};
 function pinIcon(c){return L.divIcon({className:"pinic",html:'<svg width="26" height="38" viewBox="0 0 26 38" xmlns="http://www.w3.org/2000/svg"><path d="M13 0C5.82 0 0 5.82 0 13c0 9.25 13 25 13 25s13-15.75 13-25C26 5.82 20.18 0 13 0z" fill="'+c+'" stroke="#ffffff" stroke-width="2"/><circle cx="13" cy="13" r="4.5" fill="#ffffff"/></svg>',iconSize:[26,38],iconAnchor:[13,38],popupAnchor:[0,-34]});}
+function offerBlock(o){const x=OFFER[o.id];if(!x)return"";return `<div class="offer"><div class="offer-u">📋 ${x.u}</div><div class="offer-v">${x.v}</div><ul class="offer-f">${x.f.map(i=>"<li>"+i+"</li>").join("")}</ul></div>`;}
 function render(filter){
   const grid=document.getElementById('grid');grid.innerHTML="";let n=0;objLayer.clearLayers();const used={};
   const SC=o=>{const v=INVEST[o.id];return v?v.g+v.r:0;};
@@ -251,10 +267,10 @@ function render(filter){
       🏠 ${o.type} · ${o.area}<br>
       <span class="price">💰 ${o.price}</span> ${o.entry?`· <span style="color:#64748b">${o.entry}</span>`:""}<br>
       🗓 ${o.done}${ft?`<br><span class="fin">${ft}</span>`:""}${invBlock(o)}</div>
-      <div>${tags}</div>
+      <div>${tags}</div>${offerBlock(o)}
       <div class="links">
         <a href="${o.site}" target="_blank" rel="noopener">🌐 Сайт застройщика</a>
-        <a href="${LINKS[o.id]||o.portal}" target="_blank" rel="noopener">📷 ${LINKS[o.id]?"Объект на Otodom":"Портал / фото"}</a>
+        <a href="${LINKS[o.id]||o.portal}" target="_blank" rel="noopener">📷 ${LINKS[o.id]?"Фото и планировки":"Портал / фото"}</a>
         <a href="${gmaps(o)}" target="_blank" rel="noopener">🗺 Google Maps</a>
         <a href="#" onclick="focusMap(${o.id});return false;">📌 На карте</a>
       </div>`;
@@ -263,7 +279,7 @@ function render(filter){
     let plat=o.lat,plng=o.lng;
     if(cnt>0){const ang=cnt*(Math.PI/4),rad=0.0006*(1+Math.floor(cnt/8));plat+=rad*Math.cos(ang);plng+=rad*Math.sin(ang);}
     markers[o.id]=L.marker([plat,plng],{icon:pinIcon(STATUS_COLOR[o.status]||"#2563eb")})
-      .bindPopup(`<b>${o.name}</b><br>${o.loc} · ${o.price}<br><a href="${LINKS[o.id]||o.site}" target="_blank" rel="noopener" style="display:inline-block;margin-top:6px;padding:5px 10px;background:#1f4e78;color:#fff;border-radius:6px;text-decoration:none">📷 Фото на Otodom →</a>`);
+      .bindPopup((()=>{const x=OFFER[o.id];return `<b>${o.name}</b><br>${o.loc}<br>${x?`<div style="margin:4px 0;font-size:12.5px">📋 ${x.u}<br><b style="color:#166534">${x.v}</b></div>`:`💰 ${o.price}<br>`}<a href="${LINKS[o.id]||o.site}" target="_blank" rel="noopener" style="display:inline-block;margin-top:6px;padding:5px 10px;background:#1f4e78;color:#fff;border-radius:6px;text-decoration:none">📷 Фото и планировки →</a>`;})());
     markers[o.id].addTo(objLayer);
   });
   document.getElementById('count').textContent=`Показано объектов: ${n} из ${OBJ.length}`;
