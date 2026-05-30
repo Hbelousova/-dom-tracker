@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Дома под Варшавой — трекер (Lesznowola / Magdalenka / Raszyn)</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<style>
+  :root{--bg:#0f172a;--card:#fff;--muted:#64748b;--line:#e2e8f0;--accent:#1f4e78}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#0f172a;background:#f1f5f9}
+  header{background:var(--bg);color:#fff;padding:18px 22px}
+  header h1{margin:0;font-size:20px}
+  header p{margin:6px 0 0;color:#94a3b8;font-size:13px}
+  .wrap{max-width:1200px;margin:0 auto;padding:16px}
+  #map{height:380px;border-radius:12px;border:1px solid var(--line);margin:16px 0}
+  .filters{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 4px}
+  .filters button{border:1px solid var(--line);background:#fff;padding:7px 12px;border-radius:999px;cursor:pointer;font-size:13px}
+  .filters button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .count{color:var(--muted);font-size:13px;margin:6px 2px 14px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:8px}
+  .badge{display:inline-block;font-size:11px;font-weight:600;padding:3px 9px;border-radius:999px}
+  .b-prio{background:#dcfce7;color:#166534}.b-look{background:#fef9c3;color:#854d0e}
+  .b-check{background:#dbeafe;color:#1e40af}.b-res{background:#f1f5f9;color:#475569}
+  .card h3{margin:2px 0 0;font-size:16px}
+  .dev{color:var(--muted);font-size:13px}
+  .meta{font-size:13px;line-height:1.5}
+  .price{font-weight:700;font-size:15px;color:var(--accent)}
+  .tag{display:inline-block;background:#f1f5f9;border-radius:6px;padding:2px 7px;font-size:12px;margin:2px 2px 0 0}
+  .links{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:8px;border-top:1px solid var(--line)}
+  .links a{font-size:12.5px;text-decoration:none;border:1px solid var(--line);padding:6px 9px;border-radius:8px;color:var(--accent)}
+  .links a:hover{background:#f8fafc}
+  .note{font-size:12px;color:var(--muted);background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:8px 10px;margin-top:4px}
+  footer{color:var(--muted);font-size:12px;text-align:center;padding:24px}
+</style>
+</head>
+<body>
+<header>
+  <h1>🏡 Дома под Варшавой — трекер</h1>
+  <p>Lesznowola · Magdalenka · Słomin · Raszyn · Nadarzyn (+ резерв) · бюджет ≤900k без отделки · обновлено 30.05.2026</p>
+</header>
+<div class="wrap">
+  <div id="map"></div>
+  <div class="filters" id="filters"></div>
+  <div class="count" id="count"></div>
+  <div class="grid" id="grid"></div>
+  <p class="note">⚠️ Фото и актуальное наличие/цены — по кнопкам «Сайт застройщика» и «Портал» в каждой карточке (в статической странице они не вшиты, т.к. меняются). Маркеры на карте — ориентир по локалитету, не точный участок.</p>
+</div>
+<footer>Источник данных: сайты застройщиков и порталы (rynekpierwotny, otodom, tabelaofert, nieruchomosci-online). Не оферта.</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const OBJ = [
+ {id:1,status:"prio",name:"Nova Magdalenka 7",dev:"Novisa Development",loc:"Słomin / Magdalenka",gmina:"Raszyn",type:"близняк/сегмент",area:"66–93 м²",price:"619–849k",entry:"вход 739k (82м²+парк.)",done:"IV–VI: I кв.2027",tags:["детсад на территории","эскроу otwarty MRP","парковка +40k","czynsz ~3 zł/м²"],lat:52.0890,lng:20.9000,
+   site:"https://novisa.pl/en/investment/nova-magdalenka-7/",portal:"https://rynekpierwotny.pl/oferty/novisa-development-sp-z-oo-sp-j/nova-magdalenka-pruszkowski-slomin-12321/"},
+ {id:2,status:"prio",name:"Osada Magdalenka 2",dev:"Ander (A. Nakielski)",loc:"Słomin",gmina:"Raszyn/Lesznowola",type:"близняк/сегмент",area:"89–125 м²",price:"739–999k",entry:"вход 739k+",done:"wrzesień 2026",tags:["эко-отопление + PV","магазин 2мин · школа 3мин","42+ дефекта — нужен odbiór","много продано"],lat:52.0870,lng:20.8980,
+   site:"https://osadamagdalenka.pl/",portal:"https://www.otodom.pl/pl/inwestycja/osada-magdalenka-ID4kog7"},
+ {id:11,status:"prio",name:"Falenty Home",dev:"уточнить",loc:"Falenty Duże",gmina:"Raszyn",type:"сегмент",area:"85–117 м²",price:"уточнить",entry:"гмина Raszyn ~8 998 zł/м²",done:"уточнить",tags:["дешёвая гмина","Stawy Raszyńskie рядом"],lat:52.1300,lng:20.9050,
+   site:"https://falenty-nowe.nieruchomosci-online.pl/nowe-domy.html",portal:"https://www.otodom.pl/pl/wyniki/sprzedaz/dom,rynek-pierwotny/mazowieckie/pruszkowski/raszyn"},
+ {id:12,status:"prio",name:"Osiedle Przytulne Janki II",dev:"уточнить (этап I сдан 2021–23)",loc:"Janki",gmina:"Raszyn",type:"близняк",area:"уточнить",price:"уточнить",entry:"—",done:"этап II",tags:["опытный застройщик","узел S8 рядом"],lat:52.1180,lng:20.9020,
+   site:"https://rynekpierwotny.pl/s/nowe-domy-pruszkowski-janki/",portal:"https://www.otodom.pl/pl/wyniki/sprzedaz/dom,rynek-pierwotny/mazowieckie/pruszkowski/raszyn/janki"},
+ {id:3,status:"look",name:"Дома Ebejot",dev:"Ebejot Development",loc:"Nadarzyn",gmina:"Nadarzyn",type:"дом",area:"65–171 м²",price:"от 659k",entry:"—",done:"уточнить",tags:["широкий метраж"],lat:52.0840,lng:20.8030,
+   site:"https://nadarzyn.nieruchomosci-online.pl/nowe-domy.html",portal:"https://www.otodom.pl/pl/wyniki/sprzedaz/dom,rynek-pierwotny/mazowieckie/pruszkowski/nadarzyn"},
+ {id:4,status:"look",name:"Mahoniowa Park",dev:"уточнить",loc:"Kajetany",gmina:"Nadarzyn",type:"близняк",area:"уточнить",price:"уточнить",entry:"—",done:"уточнить",tags:["34 близняка у леса Chojnów","энергоэфф."],lat:52.0920,lng:20.8250,
+   site:"https://www.domiporta.pl/nowe/domy/mazowieckie/nadarzyn",portal:"https://kajetany.nieruchomosci-online.pl/domy,sprzedaz/"},
+ {id:5,status:"look",name:"Близняк CLT (эко)",dev:"уточнить",loc:"Łazy / Magdalenka",gmina:"Lesznowola",type:"близняк",area:"уточнить",price:"уточнить",entry:"—",done:"сдача ~осень 2026",tags:["CLT-технология","без PCC, от застройщика"],lat:52.0700,lng:20.9550,
+   site:"https://lesznowola.nieruchomosci-online.pl/nowe-domy.html",portal:"https://noweinwestycje.pl/rynek-pierwotny/lesznowola-i-nowe-domy-jednorodzinne"},
+ {id:6,status:"look",name:"Zielone Zamienie IX",dev:"уточнить",loc:"Zamienie",gmina:"Lesznowola",type:"близняк",area:"уточнить",price:"уточнить",entry:"—",done:"уточнить",tags:["ряд из 8","гараж + сад в цене"],lat:52.0760,lng:20.9700,
+   site:"https://noweinwestycje.pl/rynek-pierwotny/zamienie",portal:"https://www.otodom.pl/pl/wyniki/sprzedaz/dom,rynek-pierwotny/mazowieckie/piaseczynski/lesznowola"},
+ {id:15,status:"look",name:"Riverside Eco Home",dev:"уточнить",loc:"Parzniew",gmina:"Brwinów",type:"близняк",area:"уточнить",price:"уточнить",entry:"под ключ (отделка вкл.)",done:"pod klucz",tags:["ПОД КЛЮЧ","6 близняков"],lat:52.1650,lng:20.7850,
+   site:"https://rynekpierwotny.pl/s/nowe-domy-pruszkowski/",portal:"https://www.otodom.pl/pl/wyniki/sprzedaz/inwestycja/mazowieckie/pruszkowski"},
+ {id:16,status:"look",name:"Nove Piaseczno (и др.)",dev:"JDM Developer",loc:"Piaseczno / Lesznowola",gmina:"piaseczyński",type:"близняк",area:"уточнить",price:"вероятно выше",entry:"—",done:"уточнить",tags:["спец по близнякам","энергоэфф."],lat:52.0810,lng:21.0230,
+   site:"https://budownictwoporady.pl/ranking-deweloperow-piaseczno/",portal:"https://www.otodom.pl/pl/wyniki/sprzedaz/dom,rynek-pierwotny/mazowieckie/piaseczynski/piaseczno"},
+ {id:13,status:"check",name:"Eco Łazy",dev:"уточнить",loc:"Łazy, ul. Cicha 6a",gmina:"Lesznowola",type:"сегмент/близняк",area:"уточнить",price:"уточнить",entry:"—",done:"уточнить",tags:["камерная","зелёная зона"],lat:52.0690,lng:20.9560,
+   site:"https://noweinwestycje.pl/rynek-pierwotny/lesznowola",portal:"https://lesznowola.nieruchomosci-online.pl/nowe-domy.html"},
+ {id:14,status:"check",name:"Sosnowe Łazy",dev:"уточнить",loc:"Łazy",gmina:"Lesznowola",type:"сегмент",area:"уточнить",price:"уточнить",entry:"—",done:"уточнить",tags:["среди зелени"],lat:52.0710,lng:20.9540,
+   site:"https://noweinwestycje.pl/rynek-pierwotny/lesznowola",portal:"https://lesznowola.nieruchomosci-online.pl/nowe-domy.html"},
+ {id:7,status:"res",name:"Оферта застройщика",dev:"уточнить",loc:"Lesznowola",gmina:"Lesznowola",type:"близняк",area:"104 м²",price:"950k",entry:"выше бюджета",done:"уточнить",tags:["участок 1129 м²"],lat:52.0700,lng:20.9300,
+   site:"https://lesznowola.nieruchomosci-online.pl/nowe-domy.html",portal:"https://www.otodom.pl/pl/wyniki/sprzedaz/dom,rynek-pierwotny/mazowieckie/piaseczynski/lesznowola"},
+ {id:8,status:"res",name:"Близняк stan dev.",dev:"уточнить",loc:"Nadarzyn (центр)",gmina:"Nadarzyn",type:"близняк",area:"132,8 м²",price:"949,9k",entry:"выше бюджета",done:"2026",tags:["5 комн","близко к работе Надажин"],lat:52.0830,lng:20.8050,
+   site:"https://nadarzyn.nieruchomosci-online.pl/nowe-domy.html",portal:"https://www.otodom.pl/pl/wyniki/sprzedaz/dom,rynek-pierwotny/mazowieckie/pruszkowski/nadarzyn"},
+ {id:9,status:"res",name:"Dom w Arkadach R2",dev:"уточнить",loc:"Żabieniec",gmina:"Piaseczno",type:"близняк",area:"90 м²",price:"850k",entry:"участок 515 м²",done:"уточнить",tags:["рельсы к Воле лучше","до Надажина дальше"],lat:52.1050,lng:21.0050,
+   site:"https://rynekpierwotny.pl/s/nowe-domy-piaseczno/blizniaki/",portal:"https://www.otodom.pl/pl/wyniki/sprzedaz/dom,rynek-pierwotny/mazowieckie/piaseczynski/piaseczno"},
+ {id:10,status:"res",name:"Проект на ul. Rzymska",dev:"уточнить",loc:"Grodzisk Maz.",gmina:"Grodzisk",type:"близняк/сегмент",area:"136–151 м²",price:"уточнить",entry:"CPK-опцион",done:"IV кв.2026",tags:["рост/CPK","вне шумовой зоны"],lat:52.1060,lng:20.6330,
+   site:"https://rynekpierwotny.pl/s/nowe-domy-grodzisk-mazowiecki/",portal:"https://www.otodom.pl/pl/wyniki/sprzedaz/dom,rynek-pierwotny/mazowieckie/grodziski/grodzisk-mazowiecki"},
+];
+const LABELS={prio:["🟢 Приоритет","b-prio"],look:["🟡 Смотрим","b-look"],check:["🔵 Проверить","b-check"],res:["⚪ Резерв","b-res"]};
+const map=L.map('map').setView([52.09,20.90],11);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(map);
+const markers={};
+function gmaps(o){return "https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(o.loc+" "+o.name+" "+o.gmina);}
+function render(filter){
+  const grid=document.getElementById('grid');grid.innerHTML="";
+  let n=0;
+  OBJ.forEach(o=>{
+    if(filter!=="all"&&o.status!==filter)return;n++;
+    const [lbl,cls]=LABELS[o.status];
+    const tags=o.tags.map(t=>`<span class="tag">${t}</span>`).join(" ");
+    const card=document.createElement('div');card.className="card";card.id="card"+o.id;
+    card.innerHTML=`<span class="badge ${cls}">${lbl}</span>
+      <h3>${o.name}</h3><div class="dev">${o.dev}</div>
+      <div class="meta">📍 ${o.loc} <span style="color:#94a3b8">(гм. ${o.gmina})</span><br>
+      🏠 ${o.type} · ${o.area}<br>
+      <span class="price">💰 ${o.price}</span> ${o.entry?`· <span style="color:#64748b">${o.entry}</span>`:""}<br>
+      🗓 ${o.done}</div>
+      <div>${tags}</div>
+      <div class="links">
+        <a href="${o.site}" target="_blank" rel="noopener">🌐 Сайт застройщика</a>
+        <a href="${o.portal}" target="_blank" rel="noopener">📷 Портал / фото</a>
+        <a href="${gmaps(o)}" target="_blank" rel="noopener">🗺 Google Maps</a>
+        <a href="#" onclick="focusMap(${o.id});return false;">📌 На карте</a>
+      </div>`;
+    grid.appendChild(card);
+    if(!markers[o.id]){
+      const m=L.marker([o.lat,o.lng]).addTo(map)
+        .bindPopup(`<b>${o.name}</b><br>${o.loc}<br>${o.price}<br><a href="${o.site}" target="_blank">Сайт →</a>`);
+      markers[o.id]=m;
+    }
+  });
+  document.getElementById('count').textContent=`Показано объектов: ${n} из ${OBJ.length}`;
+}
+function focusMap(id){const o=OBJ.find(x=>x.id===id);map.setView([o.lat,o.lng],14);markers[id].openPopup();window.scrollTo({top:0,behavior:'smooth'});}
+const fbar=document.getElementById('filters');
+[["all","Все"],["prio","🟢 Приоритет"],["look","🟡 Смотрим"],["check","🔵 Проверить"],["res","⚪ Резерв"]].forEach(([k,t],i)=>{
+  const b=document.createElement('button');b.textContent=t;if(i===0)b.className="active";
+  b.onclick=()=>{document.querySelectorAll('.filters button').forEach(x=>x.classList.remove('active'));b.classList.add('active');render(k);};
+  fbar.appendChild(b);
+});
+render("all");
+</script>
+</body>
+</html>
