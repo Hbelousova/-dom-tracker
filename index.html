@@ -54,6 +54,10 @@
   .heat-good{background:#dcfce7;color:#166534}
   .heat-gas{background:#fef3c7;color:#92400e}
   .heat-na{background:#f1f5f9;color:#64748b}
+  .neigh{display:inline-block;font-size:11.5px;font-weight:600;padding:2px 8px;border-radius:6px;margin:2px 0}
+  .neigh-good{background:#dcfce7;color:#166534}
+  .neigh-warn{background:#fef3c7;color:#92400e}
+  .neigh-na{background:#f1f5f9;color:#64748b}
   .howto{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:14px 0 0;font-size:13px;color:#334155}
   .howto summary{cursor:pointer;font-weight:700;color:#1f4e78;font-size:14px}
   .howto div{margin-top:8px;line-height:1.7}
@@ -96,6 +100,7 @@
       <b>Статусы:</b> 🟢 Приоритет (наши фавориты) · 🟡 Смотрим · 🔵 Проверить · ⚪ Резерв · 🟣 Вторичка (готовые дома).<br>
       <b>Рейтинг:</b> 📈 прирост капитала · 🔑 потенциал аренды (★ из 3).<br>
       <b>🔥 Отопление:</b> зелёный = тепловой насос (дёшево в эксплуатации), жёлтый = газ (дороже), серый = уточнить.<br>
+      <b>🏠 Соседи:</b> зелёный = близняк / крайний сегмент / отдельностоящий (сосед макс. с 1 стороны, никого сверху); жёлтый = средний сегмент (соседи с 2 сторон) — спросить про крайние юниты.<br>
       <b>Словарь:</b> <i>stan deweloperski</i> — без отделки (голые стены) · <i>czynsz/opłata</i> — ежемес. платёж за осиедле · <i>эскроу (MRP)</i> — деньги под защитой банка · <i>PCC 2%</i> — налог на вторичке · <i>odbiór</i> — приёмка дома · <i>PV/фотовольтаика</i> — солнечные панели.
     </div>
   </details>
@@ -321,9 +326,19 @@ const QFULL={
  19:["Точная цена нужного юнита (72–80 м²) + что входит?","Срок сдачи (akt notarialny)?","Парковка/гараж — в цене или доплата?","czynsz/opłata за осиедле?","Класс энергии EP? подтвердить тепловой насос","Тип эскроу + DFG?","Что разрешено строить рядом (MPZP)?"],
  24:["Тип «Dom» — отдельностоящий или половина близняка?","Парковка/гараж — в цене или доплата (как +40k у Nova Magdalenka)?","czynsz/opłata?","Точный срок сдачи?","Класс энергии EP? (отопление газ — подтвердить расход)","Тип эскроу + DFG?","Все ли юниты 75 м²/3 комнаты или есть больше?"]
 };
-function askBlock(o){const q=QFULL[o.id]||((ASK[o.id]||[]).concat(o.status==="sec"?BASE_SEC:BASE));return `<details class="ask"><summary>❓ Что спросить у девелопера (${q.length})</summary><ul>${q.map(i=>"<li>"+i+"</li>").join("")}</ul></details>`;}
+const VIEWQ=["🏠 Сколько общих стен — сосед с 1 стороны или с 2? крайний ли это сегмент/близняк? (нет ли соседей сверху — это дом, не квартира)","👀 Что выходит на окна и сад — зелень/лес/парк или окна соседей? есть ли сосед сзади?"];
+function askBlock(o){const core=QFULL[o.id]||((ASK[o.id]||[]).concat(o.status==="sec"?BASE_SEC:BASE));const q=core.concat(VIEWQ);return `<details class="ask"><summary>❓ Что спросить у девелопера (${q.length})</summary><ul>${q.map(i=>"<li>"+i+"</li>").join("")}</ul></details>`;}
 const HEAT={1:{t:"газ",c:"gas"},2:{t:"тепл. насос + PV",c:"good"},3:{t:"газ",c:"gas"},11:{t:"тепловой насос",c:"good"},19:{t:"тепловой насос",c:"good"},20:{t:"газ",c:"gas"},24:{t:"газ",c:"gas"},28:{t:"газ",c:"gas"}};
 function heatBadge(o){const x=HEAT[o.id]||{t:"отопление: уточнить",c:"na"};return `<span class="heat heat-${x.c}">🔥 ${x.t}</span>`;}
+function neighInfo(o){const s=(o.type+" "+o.name+" "+(o.tags||[]).join(" ")).toLowerCase();
+ if(/крайн|skrajn|ostatni segment/.test(s))return {t:"крайний сегмент — сосед с 1 стороны",c:"good"};
+ if(/wolnostoj|отдельност/.test(s))return {t:"отдельностоящий — соседей по стенам нет",c:"good"};
+ if(/(сегмент|szeregow|шеренг)/.test(s)&&/близ/.test(s))return {t:"близняк/сегмент — зависит от юнита (спросить крайний)",c:"warn"};
+ if(/близ/.test(s))return {t:"близняк — сосед с 1 стороны",c:"good"};
+ if(/(сегмент|szeregow|шеренг)/.test(s))return {t:"сегмент — возможны соседи с 2 сторон",c:"warn"};
+ if(/дом/.test(s))return {t:"дом — уточнить тип (отдельный/близняк/сегмент)",c:"na"};
+ return {t:"тип — уточнить",c:"na"};}
+function neighBadge(o){const x=neighInfo(o);return `<span class="neigh neigh-${x.c}">🏠 ${x.t}</span>`;}
 function render(filter){
   const grid=document.getElementById('grid');grid.innerHTML="";let n=0;objLayer.clearLayers();const used={};
   const SC=o=>{const v=INVEST[o.id];return v?v.g+v.r:0;};
@@ -338,7 +353,7 @@ function render(filter){
       <div class="meta">📍 ${o.loc} <span style="color:#94a3b8">(гм. ${o.gmina})</span><br>
       🏠 ${o.type} · ${o.area}<br>
       <span class="price">💰 ${o.price}</span> ${o.entry?`· <span style="color:#64748b">${o.entry}</span>`:""}<br>
-      🗓 ${o.done}${ft?`<br><span class="fin">${ft}</span>`:""}<br>${heatBadge(o)}${invBlock(o)}</div>
+      🗓 ${o.done}${ft?`<br><span class="fin">${ft}</span>`:""}<br>${heatBadge(o)} ${neighBadge(o)}${invBlock(o)}</div>
       <div>${tags}</div>${offerBlock(o)}${askBlock(o)}
       <div class="links">
         <a href="${o.site}" target="_blank" rel="noopener">🌐 Сайт застройщика</a>
@@ -351,7 +366,7 @@ function render(filter){
     let plat=o.lat,plng=o.lng;
     if(cnt>0){const ang=cnt*(Math.PI/4),rad=0.0006*(1+Math.floor(cnt/8));plat+=rad*Math.cos(ang);plng+=rad*Math.sin(ang);}
     markers[o.id]=L.marker([plat,plng],{icon:pinIcon(STATUS_COLOR[o.status]||"#2563eb")})
-      .bindPopup((()=>{const x=OFFER[o.id];return `<b>${o.name}</b><br>${o.loc} · 🔥 ${(HEAT[o.id]||{t:"уточнить"}).t}<br>${x?`<div style="margin:4px 0;font-size:12.5px">📋 ${x.u}<br><b style="color:#166534">${x.v}</b></div>`:`💰 ${o.price}<br>`}<a href="${LINKS[o.id]||o.site}" target="_blank" rel="noopener" style="display:inline-block;margin-top:6px;padding:5px 10px;background:#1f4e78;color:#fff;border-radius:6px;text-decoration:none">📷 Фото и планировки →</a>`;})());
+      .bindPopup((()=>{const x=OFFER[o.id];return `<b>${o.name}</b><br>${o.loc} · 🔥 ${(HEAT[o.id]||{t:"уточнить"}).t}<br>🏠 ${neighInfo(o).t}<br>${x?`<div style="margin:4px 0;font-size:12.5px">📋 ${x.u}<br><b style="color:#166534">${x.v}</b></div>`:`💰 ${o.price}<br>`}<a href="${LINKS[o.id]||o.site}" target="_blank" rel="noopener" style="display:inline-block;margin-top:6px;padding:5px 10px;background:#1f4e78;color:#fff;border-radius:6px;text-decoration:none">📷 Фото и планировки →</a>`;})());
     markers[o.id].addTo(objLayer);
   });
   document.getElementById('count').textContent=`Показано объектов: ${n} из ${OBJ.length}`;
