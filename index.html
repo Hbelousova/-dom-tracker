@@ -165,7 +165,9 @@ const OBJ = [
  {id:25,status:"res",name:"Wólka Family domy",dev:"Devita Development",loc:"Wólka Kosowska",gmina:"Lesznowola",type:"дом",area:"уточнить",price:"~8 746 zł/м²",entry:"⚠ рядом оптовый центр (трафик)",done:"уточнить",tags:["Otodom-находка","Wólka Kosowska — грузовой трафик"],lat:52.0250,lng:20.8800,
    site:"https://www.otodom.pl/pl/wyniki/sprzedaz/dom,rynek-pierwotny/mazowieckie/piaseczynski/lesznowola?priceMax=950000",portal:"https://www.otodom.pl/pl/wyniki/sprzedaz/dom,rynek-pierwotny/mazowieckie/piaseczynski/lesznowola?priceMax=950000"},
  {id:26,status:"check",name:"Готовый сегмент Magdalenka (OLX)",dev:"частное / уточнить",loc:"Magdalenka",gmina:"Lesznowola",type:"сегмент (крайний)",area:"уточнить",price:"898k",entry:"✅ ГОТОВ к заезду, у леса",done:"готов",tags:["OLX-находка","готов — заезд сразу","у 3M"],lat:52.0640,lng:20.8830,
-   site:"https://www.olx.pl/nieruchomosci/domy/sprzedaz/q-Magdalenka/",portal:"https://www.olx.pl/nieruchomosci/domy/sprzedaz/q-Magdalenka/"},
+   site:"https://www.otodom.pl/pl/oferta/gotowy-ostatni-skrajny-segment-pod-lasem-super-lokalizacja-warszawa-ID4AROn",portal:"https://www.otodom.pl/pl/oferta/gotowy-ostatni-skrajny-segment-pod-lasem-super-lokalizacja-warszawa-ID4AROn"},
+ {id:27,status:"check",name:"Solis Park",dev:"уточнить",loc:"Lesznowola (под Варшавой)",gmina:"Lesznowola",type:"дом",area:"уточнить",price:"уточнить",entry:"совр. дома с садами",done:"уточнить",tags:["Otodom-находка","частные сады"],lat:52.0750,lng:20.9200,
+   site:"https://www.otodom.pl/pl/inwestycja/solis-park-nowoczesne-domy-z-prywatnymi-ogrodami-pod-warszawa-ID4BpVN",portal:"https://www.otodom.pl/pl/inwestycja/solis-park-nowoczesne-domy-z-prywatnymi-ogrodami-pod-warszawa-ID4BpVN"},
 ];
 const INVEST={
  1:{g:3,r:3,why:"Надёжный девелопер + осиедле с детсадом/магазином/спортзалом = магнит для аренды и ликвидность."},
@@ -180,6 +182,21 @@ const INVEST={
  20:{g:3,r:2,why:"Ronson — биржевой девелопер: лучшая ликвидность и защита цены при перепродаже."},
  24:{g:2,r:2},
  26:{g:2,r:3,why:"Готов к заезду — сразу жить или сдавать; у леса в Magdalenka, рядом 3M."}
+};
+const LINKS={
+ 1:"https://www.otodom.pl/pl/inwestycja/nova-magdalenka-7-ID4vooT",
+ 2:"https://www.otodom.pl/pl/inwestycja/osada-magdalenka-ID4kog7",
+ 3:"https://www.otodom.pl/pl/inwestycja/ventura-verde-ID4u9wq",
+ 11:"https://www.otodom.pl/pl/inwestycja/falenty-home-ID4AU2y",
+ 14:"https://www.otodom.pl/pl/inwestycja/start-sprzedazy-osiedle-sosnowe-lazy-aleja-akacjowa-3-etap-ID4AAS3",
+ 19:"https://www.otodom.pl/pl/inwestycja/przyjazne-janczewice-ID4B7kG",
+ 20:"https://www.otodom.pl/pl/inwestycja/nowe-falenty-ID4umK7",
+ 21:"https://www.otodom.pl/pl/oferta/przestronny-segment-z-duzym-ogrodem-walendow-ID4APFM",
+ 23:"https://www.otodom.pl/pl/inwestycja/nova-wola-park-2-domy-ID4ASd3",
+ 24:"https://www.otodom.pl/pl/inwestycja/zielono-mi-2-ID4ynUh",
+ 25:"https://www.otodom.pl/pl/inwestycja/wolka-family-domy-ID4BiUj",
+ 26:"https://www.otodom.pl/pl/oferta/gotowy-ostatni-skrajny-segment-pod-lasem-super-lokalizacja-warszawa-ID4AROn",
+ 27:"https://www.otodom.pl/pl/inwestycja/solis-park-nowoczesne-domy-z-prywatnymi-ogrodami-pod-warszawa-ID4BpVN"
 };
 const LABELS={prio:["🟢 Приоритет","b-prio"],look:["🟡 Смотрим","b-look"],check:["🔵 Проверить","b-check"],res:["⚪ Резерв","b-res"]};
 const map=L.map('map').setView([52.09,20.90],11);
@@ -211,7 +228,7 @@ function render(filter){
       <div>${tags}</div>
       <div class="links">
         <a href="${o.site}" target="_blank" rel="noopener">🌐 Сайт застройщика</a>
-        <a href="${o.portal}" target="_blank" rel="noopener">📷 Портал / фото</a>
+        <a href="${LINKS[o.id]||o.portal}" target="_blank" rel="noopener">📷 ${LINKS[o.id]?"Объект на Otodom":"Портал / фото"}</a>
         <a href="${gmaps(o)}" target="_blank" rel="noopener">🗺 Google Maps</a>
         <a href="#" onclick="focusMap(${o.id});return false;">📌 На карте</a>
       </div>`;
