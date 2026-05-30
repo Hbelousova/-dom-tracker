@@ -100,7 +100,7 @@
       <b>Статусы:</b> 🟢 Приоритет (наши фавориты) · 🟡 Смотрим · 🔵 Проверить · ⚪ Резерв · 🟣 Вторичка (готовые дома).<br>
       <b>Рейтинг:</b> 📈 прирост капитала · 🔑 потенциал аренды (★ из 3).<br>
       <b>🔥 Отопление:</b> зелёный = тепловой насос (дёшево в эксплуатации), жёлтый = газ (дороже), серый = уточнить.<br>
-      <b>🏠 Соседи:</b> зелёный = близняк / крайний сегмент / отдельностоящий (сосед макс. с 1 стороны, никого сверху); жёлтый = средний сегмент (соседи с 2 сторон) — спросить про крайние юниты.<br>
+      <b>🏠 Соседи:</b> зелёный = близняк / крайний сегмент / отдельностоящий (сосед макс. с 1 стороны, никого сверху); жёлтый = средний сегмент или 2-локальный дом (сосед с 2 сторон или по этажу). <i>Это ориентир по типу — обязательно уточняйте у застройщика (особенно «lokal» / 2-локальные = сосед сверху или снизу).</i><br>
       <b>Словарь:</b> <i>stan deweloperski</i> — без отделки (голые стены) · <i>czynsz/opłata</i> — ежемес. платёж за осиедле · <i>эскроу (MRP)</i> — деньги под защитой банка · <i>PCC 2%</i> — налог на вторичке · <i>odbiór</i> — приёмка дома · <i>PV/фотовольтаика</i> — солнечные панели.
     </div>
   </details>
@@ -166,7 +166,7 @@ const OBJ = [
    site:"https://noweinwestycje.pl/rynek-pierwotny/zamienie",portal:"https://www.otodom.pl/pl/wyniki/sprzedaz/dom,rynek-pierwotny/mazowieckie/piaseczynski/lesznowola"},
  {id:15,status:"res",name:"Riverside Eco Home",dev:"AS Housing / BPX",loc:"Parzniew (Brwinów)",gmina:"Brwinów",type:"близняк",area:"123 м²",price:"от 1,42 млн ⚠ выше бюджета",entry:"под ключ; у PKP Parzniew (8 мин пешком)",done:"pod klucz",tags:["6 близняков, под ключ","⚠ ВЫШЕ бюджета (1,42 млн)","ж/д Parzniew рядом"],lat:52.1650,lng:20.7850,
    site:"https://bpxdom.pl/osiedle-riverside-eco-home/",portal:"https://rynekpierwotny.pl/oferty/as-housing/riverside-eco-home-pruszkowski-parzniew-19438/"},
- {id:16,status:"look",name:"Nove Piaseczno (JDM)",dev:"JDM Deweloper",loc:"Chylice Pólko (Piaseczno)",gmina:"piaseczyński",type:"дом отдельностоящий",area:"от 81 м²",price:"от 879k",entry:"⭐ отдельностоящий — приватность; далеко от 3M",done:"уточнить",tags:["отдельные дома в зелени","у Konstancin/Józefosław","высокий стандарт (klima/kominek)"],lat:52.0810,lng:21.0230,
+ {id:16,status:"look",name:"Nove Piaseczno (JDM)",dev:"JDM Deweloper",loc:"Chylice Pólko (Piaseczno)",gmina:"piaseczyński",type:"дом 2-локальный (lokal)",area:"63–85 м²",price:"от ~879k",entry:"⚠ 2-локальный — сосед сверху/снизу; далеко от 3M",done:"уточнить",tags:["⚠ дом на 2 локаля — сосед по этажу","сад «do wyłącznego użytku»","у Konstancin/Józefosław"],lat:52.0810,lng:21.0230,
    site:"https://jdmdeweloper.pl/",portal:"https://novepiaseczno.pl/"},
  {id:13,status:"check",name:"Eco Łazy",dev:"уточнить",loc:"Łazy, ul. Cicha 6a",gmina:"Lesznowola",type:"сегмент/близняк",area:"уточнить",price:"уточнить",entry:"—",done:"уточнить",tags:["камерная","зелёная зона"],lat:52.0690,lng:20.9560,
    site:"https://noweinwestycje.pl/rynek-pierwotny/lesznowola",portal:"https://lesznowola.nieruchomosci-online.pl/nowe-domy.html"},
@@ -281,7 +281,7 @@ const OFFER={
  19:{u:"5к, 72–94 м², от 8 900 zł/м² (~640–840k)",v:"✅ В бюджет (72–94 м²)",f:["отопление: ТЕПЛОВОЙ НАСОС (низкая коммуналка)","вплотную к Słomin / Nova Magdalenka / 3M","застройщик MK Residential"]},
  20:{u:"до 98 м², 4к, от 9 727 zł/м² (~950k)",v:"⚠ На грани/выше бюджета (~950k)",f:["отопление: газ","Ronson — крупный биржевой девелопер (надёжность/ликвидность)","Falenty Nowe, у 3M"]},
  28:{u:"сегмент 73 м² — 680k (вторичка)",v:"✅ В бюджет, готов",f:["под собственную аранжировку","осиедле Novisa у 3M","дом — czynsz низкий/нулевой"]},
- 16:{u:"дом/близняк, от 81 м² (5к) — от 879k",v:"✅ В бюджет (~879k), высокий стандарт",f:["кондиционер + тёплый пол + камин","рельсы к Воле, но ~20 мин до 3M","застройщик JDM"]},
+ 16:{u:"lokal 63–85 м², 4 комн — от ~879–899k (сад «do wyłącznego użytku»)",v:"⚠ 2-локальный: сосед сверху/снизу — НЕ под «без соседей сверху»",f:["⚠ дом на 2 локаля — есть сосед по этажу (проверять конкретный дом)","кондиционер + тёплый пол + камин","далеко от 3M (~20 мин), Piaseczno","застройщик JDM — есть и др. типы, уточнять"]},
  21:{u:"сегмент, ~7 143 zł/м² (дёшево)",v:"уточнить общую цену — но дёшево",f:["самый низкий zł/м² у 3M","Walendów (гм. Nadarzyn)","частное — проверить детали"]},
  22:{u:"дом с гаражом и садом, ~8 407 zł/м²",v:"уточнить общую цену",f:["Stara Wieś, у 3M","частное объявление"]},
  26:{u:"крайний сегмент у леса — 898k (готов)",v:"✅ В бюджет, ГОТОВ к заезду",f:["у леса в Magdalenka, рядом 3M","вторичка — проверить состояние","дом — czynsz низкий"]},
@@ -332,6 +332,7 @@ function askBlock(o){const core=QFULL[o.id]||((ASK[o.id]||[]).concat(o.status===
 const HEAT={1:{t:"газ",c:"gas"},2:{t:"тепл. насос + PV",c:"good"},3:{t:"газ",c:"gas"},4:{t:"тепл. насос + PV (A+)",c:"good"},11:{t:"тепловой насос",c:"good"},19:{t:"тепловой насос",c:"good"},20:{t:"газ",c:"gas"},24:{t:"газ",c:"gas"},27:{t:"газ (тёплый пол)",c:"gas"},28:{t:"газ",c:"gas"}};
 function heatBadge(o){const x=HEAT[o.id]||{t:"отопление: уточнить",c:"na"};return `<span class="heat heat-${x.c}">🔥 ${x.t}</span>`;}
 function neighInfo(o){const s=(o.type+" "+o.name+" "+(o.tags||[]).join(" ")).toLowerCase();
+ if(/2-локальн|dwulokal|сосед сверху|по этажу/.test(s))return {t:"2-локальный — сосед сверху/снизу",c:"warn"};
  if(/крайн|skrajn|ostatni segment/.test(s))return {t:"крайний сегмент — сосед с 1 стороны",c:"good"};
  if(/wolnostoj|отдельност/.test(s))return {t:"отдельностоящий — соседей по стенам нет",c:"good"};
  if(/(сегмент|szeregow|шеренг)/.test(s)&&/близ/.test(s))return {t:"близняк/сегмент — зависит от юнита (спросить крайний)",c:"warn"};
