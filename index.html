@@ -86,13 +86,13 @@
   <!-- ====== КАЛЬКУЛЯТОР ====== -->
   <section id="calc">
     <h2>🧮 Калькулятор сделки</h2>
-    <p class="sub">Обычная ипотека (госпрограмма RKM паре подруг, скорее всего, не положена). Меняй цифры — расчёт обновляется сразу.</p>
+    <p class="sub">Обычная ипотека (госпрограмма RKM паре подруг, скорее всего, не положена). Доступно ~150k на взнос → при 10% (~74k) остаётся запас. Меняй цифры — расчёт обновляется сразу.</p>
     <div class="calc-grid">
       <div>
         <div class="inp"><label>Цена объекта (вкл. парковку), zł</label><input id="i_price" type="number" value="739000"></div>
         <div class="inp"><label>Оформление (нотариус/вписи), zł</label><input id="i_close" type="number" value="12000"></div>
         <div class="inp"><label>Отделка (отдельно), zł</label><input id="i_fin" type="number" value="144000"></div>
-        <div class="inp"><label>Первый взнос, %</label><input id="i_down" type="number" value="15"></div>
+        <div class="inp"><label>Первый взнос, % (минимум обычно 10%)</label><input id="i_down" type="number" value="10"></div>
         <div class="inp"><label>Ставка, % годовых</label><input id="i_rate" type="number" step="0.1" value="6.5"></div>
         <div class="inp"><label>Срок кредита, лет</label><input id="i_term" type="number" value="30"></div>
         <div class="inp"><label>Прочие расходы/мес (opłata+коммуналка+податок), zł</label><input id="i_other" type="number" value="1050"></div>
@@ -191,6 +191,15 @@ const fbar=document.getElementById('filters');
   fbar.appendChild(b);
 });
 render("all");
+
+/* ---------- Места работы ---------- */
+const WORK=[
+ {name:"💼 Работа: 3M",lat:52.0866,lng:20.8347,info:"3M Poland, al. Katowicka 117, Kajetany (gm. Nadarzyn)"},
+ {name:"💼 Работа: Wola",lat:52.2360,lng:20.9850,info:"Warszawa, Wola (центр — уточнить точный адрес)"},
+];
+const workIcon=L.divIcon({className:"",html:'<div style="font-size:24px;line-height:24px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.4))">💼</div>',iconSize:[26,26],iconAnchor:[13,13]});
+WORK.forEach(w=>L.marker([w.lat,w.lng],{icon:workIcon,zIndexOffset:1000}).addTo(map)
+  .bindPopup(`<b>${w.name}</b><br>${w.info}<br><a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(w.info)}" target="_blank">Google Maps →</a>`));
 
 /* ---------- POI слои (OpenStreetMap / Overpass) — один объединённый запрос + дебаунс + запасной сервер ---------- */
 const POI={
