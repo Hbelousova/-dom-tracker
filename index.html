@@ -32,6 +32,7 @@
   .badge{display:inline-block;font-size:11px;font-weight:600;padding:3px 9px;border-radius:999px}
   .b-prio{background:#dcfce7;color:#166534}.b-look{background:#fef9c3;color:#854d0e}
   .b-check{background:#dbeafe;color:#1e40af}.b-res{background:#f1f5f9;color:#475569}
+  .b-sec{background:#ede9fe;color:#6d28d9}
   .card h3{margin:2px 0 0;font-size:16px}
   .dev{color:var(--muted);font-size:13px}
   .meta{font-size:13px;line-height:1.5}
@@ -80,11 +81,11 @@
   </div>
   <div id="poihint">Включи слой и приблизь карту к объекту (zoom ≥ 13). Данные — OpenStreetMap.</div>
 
-  <p style="font-size:12.5px;color:#475569;margin:16px 2px 2px">Список отсортирован по <b>инвестрейтингу</b>: 📈 прирост капитала · 🔑 потенциал аренды (★ из 3). Фильтр по статусу — ниже.</p>
+  <p style="font-size:12.5px;color:#475569;margin:16px 2px 2px">Список отсортирован по <b>инвестрейтингу</b>: 📈 прирост капитала · 🔑 потенциал аренды (★ из 3). Фильтр по статусу — ниже. <b style="color:#6d28d9">🔁 Вторичка</b> — готовые дома (на карте — фиолетовые точки).</p>
   <div class="filters" id="filters"></div>
   <div class="count" id="count"></div>
   <div class="grid" id="grid"></div>
-  <p class="note">⚠️ Фото и актуальное наличие/цены — по кнопкам «Сайт застройщика» и «Портал». Маркеры объектов — ориентир по локалитету. На карте только дома/близняки (квартиры исключены). «Отделка» — ориентир ~1 750 zł/м², НЕ входит в бюджет ≤900k.</p>
+  <p class="note">⚠️ Фото и актуальное наличие/цены — по кнопкам «Сайт застройщика» и «Портал». Маркеры объектов — ориентир по локалитету. На карте только дома/близняки (квартиры исключены). «Отделка» — ориентир ~1 750 zł/м², НЕ входит в бюджет ≤900k. 🔁 Вторичка: czynsz / класс энергии / состояние — проверять по каждому объявлению (у домов и близняков czynsz обычно нулевой или низкий) + техническая инспекция перед покупкой.</p>
 
   <!-- ====== КАЛЬКУЛЯТОР ====== -->
   <section id="calc">
@@ -168,6 +169,20 @@ const OBJ = [
    site:"https://www.otodom.pl/pl/oferta/gotowy-ostatni-skrajny-segment-pod-lasem-super-lokalizacja-warszawa-ID4AROn",portal:"https://www.otodom.pl/pl/oferta/gotowy-ostatni-skrajny-segment-pod-lasem-super-lokalizacja-warszawa-ID4AROn"},
  {id:27,status:"check",name:"Solis Park",dev:"уточнить",loc:"Lesznowola (под Варшавой)",gmina:"Lesznowola",type:"дом",area:"уточнить",price:"уточнить",entry:"совр. дома с садами",done:"уточнить",tags:["Otodom-находка","частные сады"],lat:52.0750,lng:20.9200,
    site:"https://www.otodom.pl/pl/inwestycja/solis-park-nowoczesne-domy-z-prywatnymi-ogrodami-pod-warszawa-ID4BpVN",portal:"https://www.otodom.pl/pl/inwestycja/solis-park-nowoczesne-domy-z-prywatnymi-ogrodami-pod-warszawa-ID4BpVN"},
+ {id:28,status:"sec",name:"Nova Magdalenka 5 — сегмент 73 м²",dev:"вторичка (перепродажа)",loc:"Słomin",gmina:"Raszyn",type:"сегмент",area:"73 м²",price:"680k",entry:"⭐ у 3M, под аранжировку",done:"готов",tags:["вторичка","осиедле Novisa","дом — czynsz низкий*"],lat:52.0890,lng:20.9000,
+   site:"https://www.otodom.pl/pl/oferta/nova-magdalenka-5-segment-73-m2-gotowy-do-wlasnej-aranzacji-ID4xW1d",portal:"https://www.otodom.pl/pl/oferta/nova-magdalenka-5-segment-73-m2-gotowy-do-wlasnej-aranzacji-ID4xW1d"},
+ {id:29,status:"sec",name:"Słomin — сегмент с садом",dev:"вторичка",loc:"Słomin",gmina:"Raszyn",type:"сегмент",area:"~73 м²",price:"690k",entry:"stan deweloperski",done:"готов",tags:["вторичка","солнечный, с огородом"],lat:52.0885,lng:20.9010,
+   site:"https://www.otodom.pl/pl/oferta/nowy-w-stanie-deweloperskim-sloneczny-segment-z-ogrodkiem-ID4BgXF",portal:"https://www.otodom.pl/pl/oferta/nowy-w-stanie-deweloperskim-sloneczny-segment-z-ogrodkiem-ID4BgXF"},
+ {id:30,status:"sec",name:"Дом в Надажине 178 м²",dev:"вторичка",loc:"Nadarzyn",gmina:"Nadarzyn",type:"дом",area:"178 м²",price:"787k",entry:"много дома (~4 416 zł/м²)",done:"готов",tags:["вторичка","большой дом","проверить состояние"],lat:52.0840,lng:20.8030,
+   site:"https://www.otodom.pl/pl/oferta/dom-w-nadarzynie-ID4ssPx",portal:"https://www.otodom.pl/pl/oferta/dom-w-nadarzynie-ID4ssPx"},
+ {id:31,status:"sec",name:"Stara Wieś — у леса Młochowskiego",dev:"вторичка",loc:"Stara Wieś (Nadarzyn)",gmina:"Nadarzyn",type:"сегмент/дом",area:"уточнить",price:"850k",entry:"у леса, рядом 3M",done:"готов",tags:["вторичка","у леса"],lat:52.1000,lng:20.8100,
+   site:"https://www.otodom.pl/pl/oferta/kameralna-inwestycja-w-okolicy-lasu-mlochowskiego-ID4BeMg",portal:"https://www.otodom.pl/pl/oferta/kameralna-inwestycja-w-okolicy-lasu-mlochowskiego-ID4BeMg"},
+ {id:32,status:"sec",name:"Stara Wieś — дом в зелени (свежее)",dev:"вторичка",loc:"Stara Wieś (Nadarzyn)",gmina:"Nadarzyn",type:"дом",area:"~144 м²",price:"949k",entry:"добавлено недавно",done:"готов",tags:["вторичка","тихо/зелено"],lat:52.1010,lng:20.8090,
+   site:"https://www.otodom.pl/pl/oferta/dom-w-cichej-i-zielonej-okolicy-ID4BvS8",portal:"https://www.otodom.pl/pl/oferta/dom-w-cichej-i-zielonej-okolicy-ID4BvS8"},
+ {id:33,status:"sec",name:"Lesznowola — дом у леса",dev:"вторичка",loc:"Lesznowola",gmina:"Lesznowola",type:"дом",area:"уточнить",price:"уточнить",entry:"20 мин от Варшавы, тихо/лес",done:"stan deweloperski",tags:["вторичка","у леса"],lat:52.0700,lng:20.9300,
+   site:"https://www.otodom.pl/pl/oferta/twoj-dom-20-minut-od-warszawy-cisza-spokoj-las-stan-deweloperski-ID4AkUU",portal:"https://www.otodom.pl/pl/oferta/twoj-dom-20-minut-od-warszawy-cisza-spokoj-las-stan-deweloperski-ID4AkUU"},
+ {id:34,status:"sec",name:"Władysławów — крайний сегмент",dev:"вторичка",loc:"Władysławów",gmina:"Lesznowola",type:"сегмент крайний",area:"уточнить",price:"уточнить",entry:"малое осиедле, с садиком",done:"готов",tags:["вторичка","малое осиедле"],lat:52.0650,lng:20.9300,
+   site:"https://www.otodom.pl/pl/oferta/segment-skrajny-ogrodek-male-osiedle-wladyslawow-ID4BaMe",portal:"https://www.otodom.pl/pl/oferta/segment-skrajny-ogrodek-male-osiedle-wladyslawow-ID4BaMe"},
 ];
 const INVEST={
  1:{g:3,r:3,why:"Надёжный девелопер + осиедле с детсадом/магазином/спортзалом = магнит для аренды и ликвидность."},
@@ -181,7 +196,8 @@ const INVEST={
  19:{g:2,r:3,why:"Вплотную к экосистеме Nova Magdalenka и 3M — сильный спрос на аренду."},
  20:{g:3,r:2,why:"Ronson — биржевой девелопер: лучшая ликвидность и защита цены при перепродаже."},
  24:{g:2,r:2},
- 26:{g:2,r:3,why:"Готов к заезду — сразу жить или сдавать; у леса в Magdalenka, рядом 3M."}
+ 26:{g:2,r:3,why:"Готов к заезду — сразу жить или сдавать; у леса в Magdalenka, рядом 3M."},
+ 28:{g:2,r:3,why:"Готовый сегмент в осиедле Novisa у 3M — быстрый въезд/аренда; вторичка без премии за новизну."}
 };
 const LINKS={
  1:"https://www.otodom.pl/pl/inwestycja/nova-magdalenka-7-ID4vooT",
@@ -196,9 +212,16 @@ const LINKS={
  24:"https://www.otodom.pl/pl/inwestycja/zielono-mi-2-ID4ynUh",
  25:"https://www.otodom.pl/pl/inwestycja/wolka-family-domy-ID4BiUj",
  26:"https://www.otodom.pl/pl/oferta/gotowy-ostatni-skrajny-segment-pod-lasem-super-lokalizacja-warszawa-ID4AROn",
- 27:"https://www.otodom.pl/pl/inwestycja/solis-park-nowoczesne-domy-z-prywatnymi-ogrodami-pod-warszawa-ID4BpVN"
+ 27:"https://www.otodom.pl/pl/inwestycja/solis-park-nowoczesne-domy-z-prywatnymi-ogrodami-pod-warszawa-ID4BpVN",
+ 28:"https://www.otodom.pl/pl/oferta/nova-magdalenka-5-segment-73-m2-gotowy-do-wlasnej-aranzacji-ID4xW1d",
+ 29:"https://www.otodom.pl/pl/oferta/nowy-w-stanie-deweloperskim-sloneczny-segment-z-ogrodkiem-ID4BgXF",
+ 30:"https://www.otodom.pl/pl/oferta/dom-w-nadarzynie-ID4ssPx",
+ 31:"https://www.otodom.pl/pl/oferta/kameralna-inwestycja-w-okolicy-lasu-mlochowskiego-ID4BeMg",
+ 32:"https://www.otodom.pl/pl/oferta/dom-w-cichej-i-zielonej-okolicy-ID4BvS8",
+ 33:"https://www.otodom.pl/pl/oferta/twoj-dom-20-minut-od-warszawy-cisza-spokoj-las-stan-deweloperski-ID4AkUU",
+ 34:"https://www.otodom.pl/pl/oferta/segment-skrajny-ogrodek-male-osiedle-wladyslawow-ID4BaMe"
 };
-const LABELS={prio:["🟢 Приоритет","b-prio"],look:["🟡 Смотрим","b-look"],check:["🔵 Проверить","b-check"],res:["⚪ Резерв","b-res"]};
+const LABELS={prio:["🟢 Приоритет","b-prio"],look:["🟡 Смотрим","b-look"],check:["🔵 Проверить","b-check"],res:["⚪ Резерв","b-res"],sec:["🔁 Вторичка","b-sec"]};
 const map=L.map('map').setView([52.09,20.90],11);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(map);
 const markers={};
@@ -233,7 +256,7 @@ function render(filter){
         <a href="#" onclick="focusMap(${o.id});return false;">📌 На карте</a>
       </div>`;
     grid.appendChild(card);
-    markers[o.id]=L.marker([o.lat,o.lng])
+    markers[o.id]=(o.status==="sec"?L.circleMarker([o.lat,o.lng],{radius:8,weight:2,color:"#fff",fillColor:"#7c3aed",fillOpacity:1}):L.marker([o.lat,o.lng]))
       .bindPopup(`<b>${o.name}</b><br>${o.loc}<br>${o.price}<br><a href="${o.site}" target="_blank">Сайт →</a>`);
     markers[o.id].addTo(objLayer);
   });
@@ -241,7 +264,7 @@ function render(filter){
 }
 function focusMap(id){const o=OBJ.find(x=>x.id===id);map.setView([o.lat,o.lng],15);markers[id].openPopup();window.scrollTo({top:0,behavior:'smooth'});}
 const fbar=document.getElementById('filters');
-[["all","Все"],["prio","🟢 Приоритет"],["look","🟡 Смотрим"],["check","🔵 Проверить"],["res","⚪ Резерв"]].forEach(([k,t],i)=>{
+[["all","Все"],["prio","🟢 Приоритет"],["look","🟡 Смотрим"],["check","🔵 Проверить"],["res","⚪ Резерв"],["sec","🔁 Вторичка"]].forEach(([k,t],i)=>{
   const b=document.createElement('button');b.textContent=t;if(i===0)b.className="active";
   b.onclick=()=>{document.querySelectorAll('.filters button').forEach(x=>x.classList.remove('active'));b.classList.add('active');render(k);};
   fbar.appendChild(b);
