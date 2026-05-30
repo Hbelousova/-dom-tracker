@@ -37,6 +37,8 @@
   .meta{font-size:13px;line-height:1.5}
   .price{font-weight:700;font-size:15px;color:var(--accent)}
   .fin{color:#9a3412;font-size:12.5px}
+  .inv{color:#1f4e78;font-weight:600;font-size:12.5px}
+  .why{color:#475569;font-size:11.5px;font-style:italic}
   .tag{display:inline-block;background:#f1f5f9;border-radius:6px;padding:2px 7px;font-size:12px;margin:2px 2px 0 0}
   .links{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:8px;border-top:1px solid var(--line)}
   .links a{font-size:12.5px;text-decoration:none;border:1px solid var(--line);padding:6px 9px;border-radius:8px;color:var(--accent)}
@@ -78,6 +80,7 @@
   </div>
   <div id="poihint">Включи слой и приблизь карту к объекту (zoom ≥ 13). Данные — OpenStreetMap.</div>
 
+  <p style="font-size:12.5px;color:#475569;margin:16px 2px 2px">Список отсортирован по <b>инвестрейтингу</b>: 📈 прирост капитала · 🔑 потенциал аренды (★ из 3). Фильтр по статусу — ниже.</p>
   <div class="filters" id="filters"></div>
   <div class="count" id="count"></div>
   <div class="grid" id="grid"></div>
@@ -161,7 +164,23 @@ const OBJ = [
    site:"https://www.otodom.pl/pl/wyniki/sprzedaz/dom,rynek-pierwotny/mazowieckie/piaseczynski/lesznowola?priceMax=950000",portal:"https://www.otodom.pl/pl/wyniki/sprzedaz/dom,rynek-pierwotny/mazowieckie/piaseczynski/lesznowola?priceMax=950000"},
  {id:25,status:"res",name:"Wólka Family domy",dev:"Devita Development",loc:"Wólka Kosowska",gmina:"Lesznowola",type:"дом",area:"уточнить",price:"~8 746 zł/м²",entry:"⚠ рядом оптовый центр (трафик)",done:"уточнить",tags:["Otodom-находка","Wólka Kosowska — грузовой трафик"],lat:52.0250,lng:20.8800,
    site:"https://www.otodom.pl/pl/wyniki/sprzedaz/dom,rynek-pierwotny/mazowieckie/piaseczynski/lesznowola?priceMax=950000",portal:"https://www.otodom.pl/pl/wyniki/sprzedaz/dom,rynek-pierwotny/mazowieckie/piaseczynski/lesznowola?priceMax=950000"},
+ {id:26,status:"check",name:"Готовый сегмент Magdalenka (OLX)",dev:"частное / уточнить",loc:"Magdalenka",gmina:"Lesznowola",type:"сегмент (крайний)",area:"уточнить",price:"898k",entry:"✅ ГОТОВ к заезду, у леса",done:"готов",tags:["OLX-находка","готов — заезд сразу","у 3M"],lat:52.0640,lng:20.8830,
+   site:"https://www.olx.pl/nieruchomosci/domy/sprzedaz/q-Magdalenka/",portal:"https://www.olx.pl/nieruchomosci/domy/sprzedaz/q-Magdalenka/"},
 ];
+const INVEST={
+ 1:{g:3,r:3,why:"Надёжный девелопер + осиедле с детсадом/магазином/спортзалом = магнит для аренды и ликвидность."},
+ 2:{g:2,r:3,why:"Эко-отопление (низкие счета) + школа/магазин/3M рядом — отлично сдаётся; минус — мелкий девелопер."},
+ 3:{g:2,r:2},
+ 9:{g:2,r:3,why:"Сторона Пясечно — рельсы к Воле, глубокий спрос на аренду."},
+ 10:{g:3,r:2,why:"Апсайд CPK + рельсы, своя арендная база. Спекулятивнее, далеко от 3M."},
+ 11:{g:2,r:3,why:"Тепловые насосы (дёшево в эксплуатации), у 3M/Janki — корпоративные арендаторы."},
+ 12:{g:2,r:2},
+ 16:{g:3,r:3,why:"Как ЧИСТАЯ инвестиция — топ: SKM-рельсы к Воле/Варшаве = глубокая аренда + рост. Минус: далеко от 3M для жизни."},
+ 19:{g:2,r:3,why:"Вплотную к экосистеме Nova Magdalenka и 3M — сильный спрос на аренду."},
+ 20:{g:3,r:2,why:"Ronson — биржевой девелопер: лучшая ликвидность и защита цены при перепродаже."},
+ 24:{g:2,r:2},
+ 26:{g:2,r:3,why:"Готов к заезду — сразу жить или сдавать; у леса в Magdalenka, рядом 3M."}
+};
 const LABELS={prio:["🟢 Приоритет","b-prio"],look:["🟡 Смотрим","b-look"],check:["🔵 Проверить","b-check"],res:["⚪ Резерв","b-res"]};
 const map=L.map('map').setView([52.09,20.90],11);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(map);
@@ -173,9 +192,11 @@ function finText(o){
   const m=o.area.match(/\d+/);if(!m)return "";
   return "🔨 отделка ~"+Math.round(parseInt(m[0])*1750/1000)+"k zł (отдельно)";
 }
+function invBlock(o){const v=INVEST[o.id];if(!v)return"";const s=n=>"★".repeat(n)+"☆".repeat(3-n);return `<br><span class="inv">📈 ${s(v.g)} · 🔑 ${s(v.r)}</span>${v.why?`<br><span class="why">${v.why}</span>`:""}`;}
 function render(filter){
   const grid=document.getElementById('grid');grid.innerHTML="";let n=0;objLayer.clearLayers();
-  OBJ.forEach(o=>{
+  const SC=o=>{const v=INVEST[o.id];return v?v.g+v.r:0;};
+  [...OBJ].sort((a,b)=>SC(b)-SC(a)).forEach(o=>{
     if(filter!=="all"&&o.status!==filter)return;n++;
     const [lbl,cls]=LABELS[o.status];
     const tags=o.tags.map(t=>`<span class="tag">${t}</span>`).join(" ");
@@ -186,7 +207,7 @@ function render(filter){
       <div class="meta">📍 ${o.loc} <span style="color:#94a3b8">(гм. ${o.gmina})</span><br>
       🏠 ${o.type} · ${o.area}<br>
       <span class="price">💰 ${o.price}</span> ${o.entry?`· <span style="color:#64748b">${o.entry}</span>`:""}<br>
-      🗓 ${o.done}${ft?`<br><span class="fin">${ft}</span>`:""}</div>
+      🗓 ${o.done}${ft?`<br><span class="fin">${ft}</span>`:""}${invBlock(o)}</div>
       <div>${tags}</div>
       <div class="links">
         <a href="${o.site}" target="_blank" rel="noopener">🌐 Сайт застройщика</a>
