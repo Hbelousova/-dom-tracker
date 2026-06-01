@@ -33,6 +33,15 @@
   .b-prio{background:#dcfce7;color:#166534}.b-look{background:#fef9c3;color:#854d0e}
   .b-check{background:#dbeafe;color:#1e40af}.b-res{background:#f1f5f9;color:#475569}
   .b-sec{background:#ede9fe;color:#6d28d9}
+  .b-work{background:#ffe4e6;color:#9f1239}
+  .log{margin-top:6px;font-size:12px}
+  .log summary{cursor:pointer;color:#9f1239;font-weight:600;font-size:12.5px}
+  .log ul{margin:6px 0 0;padding-left:0;list-style:none}
+  .log li{margin:0 0 6px;padding:6px 9px;border-radius:8px;line-height:1.5;color:#334155}
+  .log li.out{background:#eff6ff;border:1px solid #dbeafe}
+  .log li.in{background:#f0fdf4;border:1px solid #dcfce7}
+  .log li.note{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412}
+  .log .d{font-weight:700;font-size:11px;color:#475569;display:block;margin-bottom:2px}
   .pinic{background:transparent;border:0}
   .card h3{margin:2px 0 0;font-size:16px}
   .dev{color:var(--muted);font-size:13px}
@@ -89,7 +98,7 @@
 <body>
 <header>
   <h1>🏡 Дома под Варшавой — трекер</h1>
-  <p>Lesznowola · Magdalenka · Słomin · Raszyn · Nadarzyn (+ резерв) · бюджет ≤900k без отделки · обновлено 30.05.2026</p>
+  <p>Lesznowola · Magdalenka · Słomin · Raszyn · Nadarzyn (+ резерв) · бюджет ≤900k без отделки · обновлено 01.06.2026</p>
 </header>
 <div class="wrap">
   <details class="howto" open>
@@ -97,11 +106,11 @@
     <div>
       <b>1.</b> Кликни цветной пин на карте → цена, что входит и кнопка «📷 Фото и планировки».<br>
       <b>2.</b> Кнопки-фильтры под картой показывают объекты по статусу. <b>3.</b> В карточке внизу — «❓ Что спросить у девелопера».<br>
-      <b>Статусы:</b> 🟢 Приоритет (наши фавориты) · 🟡 Смотрим · 🔵 Проверить · ⚪ Резерв · 🟣 Вторичка (готовые дома).<br>
+      <b>Статусы:</b> 📨 В работе (ведём переписку, ждём проспект) · 🟢 Приоритет (наши фавориты) · 🟡 Смотрим · 🔵 Проверить · ⚪ Резерв · 🔁 Вторичка (готовые дома).<br>
       <b>Рейтинг:</b> 📈 прирост капитала · 🔑 потенциал аренды (★ из 3).<br>
       <b>🔥 Отопление:</b> зелёный = тепловой насос (дёшево в эксплуатации), жёлтый = газ (дороже), серый = уточнить.<br>
       <b>🏠 Соседи:</b> зелёный = близняк / крайний сегмент / отдельностоящий (сосед макс. с 1 стороны, никого сверху); жёлтый = средний сегмент или 2-локальный дом (сосед с 2 сторон или по этажу). <i>Это ориентир по типу — обязательно уточняйте у застройщика (особенно «lokal» / 2-локальные = сосед сверху или снизу).</i><br>
-      <b>⏰ Дедлайн заезда — май 2027:</b> готовые/вторичка — идеально; новостройка только если сдача (odbiór) до ~начала 2027. <b>⛔</b> = сдача позже, не успеваем.<br>
+      <b>⏰ Срок заезда — ориентир май 2027 (не жёсткий):</b> готовые/вторичка — идеально; более поздняя сдача — минус, но для сильного объекта рассмотрим. <b>⛔</b> = сдача заметно позже срока.<br>
       <b>Словарь:</b> <i>stan deweloperski</i> — без отделки (голые стены) · <i>czynsz/opłata</i> — ежемес. платёж за осиедле · <i>эскроу (MRP)</i> — деньги под защитой банка · <i>PCC 2%</i> — налог на вторичке · <i>odbiór</i> — приёмка дома · <i>PV/фотовольтаика</i> — солнечные панели.
     </div>
   </details>
@@ -119,7 +128,7 @@
   <div class="filters" id="filters"></div>
   <div class="count" id="count"></div>
   <div class="grid" id="grid"></div>
-  <p class="note">⚠️ Фото и актуальное наличие/цены — по кнопкам «Сайт застройщика» и «Портал». Маркеры объектов — ориентир по локалитету. На карте только дома/близняки (квартиры исключены). «Отделка» — ориентир ~1 750 zł/м², НЕ входит в бюджет ≤900k. 🔁 Вторичка: czynsz / класс энергии / состояние — проверять по каждому объявлению (у домов и близняков czynsz обычно нулевой или низкий) + техническая инспекция перед покупкой.</p>
+  <p class="note">⚠️ Фото и актуальное наличие/цены — по кнопкам «Сайт застройщика» и «Портал». Маркеры объектов — ориентир по локалитету. На карте только дома/близняки (квартиры исключены). «Отделка» — реально ~2 500 zł/м² С МЕБЕЛЬЮ (от ~250k для домов 90+ м²), НЕ входит в бюджет ≤900k. 🔁 Вторичка: czynsz / класс энергии / состояние — проверять по каждому объявлению (у домов и близняков czynsz обычно нулевой или низкий) + техническая инспекция перед покупкой.</p>
 
   <!-- ====== КАЛЬКУЛЯТОР ====== -->
   <section id="calc">
@@ -129,7 +138,7 @@
       <div>
         <div class="inp"><label>Цена объекта (вкл. парковку), zł</label><input id="i_price" type="number" value="739000"></div>
         <div class="inp"><label>Оформление (нотариус/вписи), zł</label><input id="i_close" type="number" value="12000"></div>
-        <div class="inp"><label>Отделка (отдельно), zł</label><input id="i_fin" type="number" value="144000"></div>
+        <div class="inp"><label>Отделка + мебель (отдельно), zł</label><input id="i_fin" type="number" value="250000"></div>
         <div class="inp"><label>Первый взнос, % (минимум обычно 10%)</label><input id="i_down" type="number" value="10"></div>
         <div class="inp"><label>Ставка, % годовых</label><input id="i_rate" type="number" step="0.1" value="6.5"></div>
         <div class="inp"><label>Срок кредита, лет</label><input id="i_term" type="number" value="30"></div>
@@ -229,8 +238,8 @@ const OBJ = [
    site:"https://www.otodom.pl/pl/oferta/bezposrednio-nowoczesny-dom-bez-pcc-i-prowizji-z-ogrodem-i-kanalizacja-ID4Bdga",portal:"https://www.otodom.pl/pl/oferta/bezposrednio-nowoczesny-dom-bez-pcc-i-prowizji-z-ogrodem-i-kanalizacja-ID4Bdga"},
  {id:40,status:"look",name:"Дом 93 м² двухэтажный с поддашем",dev:"уточнить",loc:"Lesznowola",gmina:"Lesznowola",type:"дом",area:"93 м²",price:"≤950k (по ссылке)",entry:"—",done:"уточнить",tags:["Otodom-находка"],lat:52.0720,lng:20.9280,
    site:"https://www.otodom.pl/pl/oferta/dwukondygnacyjny-dom-jednorodzinny-z-poddaszem-ID4wTBR",portal:"https://www.otodom.pl/pl/oferta/dwukondygnacyjny-dom-jednorodzinny-z-poddaszem-ID4wTBR"},
- {id:41,status:"prio",name:"Дом wolnostojący у леса (Słomin)",dev:"уточнить (агентство Platforma Mieszk.)",loc:"Słomin",gmina:"Raszyn",type:"дом отдельностоящий",area:"102,4 м²",price:"889k",entry:"⛔ срок (odbiór VII.2027), но хорош — обсудить сроки",done:"odbiór VII.2027 ⛔",tags:["⛔ сдача VII.2027 — поздно под заезд","⭐ отдельностоящий — соседей по стенам нет","тепловой насос + у леса"],lat:52.0895,lng:20.9005,
-   site:"https://slomin.nieruchomosci-online.pl/dom-wolnostojacy,deweloperski/26590583.html",portal:"https://slomin.nieruchomosci-online.pl/dom-wolnostojacy,deweloperski/26590583.html"},
+ {id:41,status:"work",name:"Spring View — сегмент 102 м² (Słomin)",dev:"Denya Cebus Poland (осиедле Spring View)",loc:"Słomin, ul. Biedronki 33/35",gmina:"Raszyn",type:"сегмент/близняк",area:"102,4 м²",price:"889k",entry:"📨 в работе — ждём проспект + этап",done:"IV эт.→2026? / VI эт.→VII.2027 — уточняем",tags:["📨 ведём переписку","Denya Cebus (Denya Group, биржа Тель-Авив)","тепл. насос + рекуперация + под PV","оплата 20/80","сегмент/близняк — общие стены с соседом","напрямую: biuro@springview.pl"],lat:52.0895,lng:20.9005,
+   site:"https://springview.pl/",portal:"https://slomin.nieruchomosci-online.pl/dom-wolnostojacy,deweloperski/26590583.html"},
  {id:42,status:"look",name:"Szeregowiec 84 м² Słomin — 739k",dev:"уточнить (частное)",loc:"Słomin",gmina:"Raszyn",type:"шеренговец",area:"84 м²",price:"739k",entry:"✅ дёшево",done:"уточнить",tags:["Otodom/частное","Słomin/Magdalenka у 3M"],lat:52.0892,lng:20.8995,
    site:"https://slomin.nieruchomosci-online.pl/dom,na-sprzedaz/26036996.html",portal:"https://slomin.nieruchomosci-online.pl/dom,na-sprzedaz/26036996.html"},
  {id:43,status:"look",name:"Szeregowiec 87 м² Słomin — 774k",dev:"уточнить (частное)",loc:"Słomin",gmina:"Raszyn",type:"шеренговец",area:"87,4 м²",price:"774k",entry:"в бюджет",done:"уточнить",tags:["Otodom/частное","Słomin/Magdalenka у 3M"],lat:52.0888,lng:20.9006,
@@ -296,7 +305,7 @@ const INVEST={
  24:{g:2,r:2},
  26:{g:2,r:3,why:"Готов к заезду — сразу жить или сдавать; у леса в Magdalenka, рядом 3M."},
  28:{g:2,r:3,why:"Готовый сегмент в осиедле Novisa у 3M — быстрый въезд/аренда; вторичка без премии за новизну."},
- 41:{g:2,r:3,why:"Отдельностоящий + насос + у леса в Słomin (у 3M) — топ под приватность/коммуналку; минус — VII.2027 и крошечный участок."}
+ 41:{g:2,r:3,why:"Spring View (Denya Cebus — Denya Group, биржевой капитал) у 3M/леса в Słomin: насос+рекуперация = низкая коммуналка, хороший спрос на аренду; минус — сегмент (не отдельностоящий) + срок этапа уточняется."}
 };
 const LINKS={
  1:"https://www.otodom.pl/pl/inwestycja/nova-magdalenka-7-ID4vooT",
@@ -370,9 +379,9 @@ const OFFER={
  32:{u:"дом ~144 м² — 949k",v:"⚠ На грани бюджета",f:["свежее объявление","тихо/зелено, Stara Wieś"]},
  35:{u:"4 комнаты, 74,14 м², участок 134 м² — 649k",v:"✅ В бюджет, готов ~через месяц",f:["первичка — без PCC","⚠ участок всего 134 м² (узкий сегмент, мало сада)","🚩 в шапке 649k, в описании «749k промо» — уточнить реальную цену","у Ikea Janki, рядом Stawy Raszyńskie","продажа через Expander — уточнить застройщика и отопление"]},
  27:{u:"Patio 80 м² — 728–744k · Living 92 м² — 810–819k (4 комн, 2 уровня, вкл. 2 парковки)",v:"✅ в бюджете; ⭐ приватность (атриум); ⚠ сдача 2028",f:["⭐ атриальные — сады ОТДЕЛЕНЫ от соседей, окна во двор","тёплый пол на ГАЗЕ, силикат, потолки 280 см","2 парковочных места включены (по 14k)","эскроу rachunek powierniczy + DFG ✓","⚠ сдача I этапа — 2028 (поздно под «заезд за год»)","доступно 7 домов (C1–C4, D1, D3, D4)","Stachowo, gmina Lesznowola, у S7/S8"]},
- 41:{u:"отдельностоящий 102,4 м²: партер 48 (гостиная-кухня 33 м²) + этаж 55 (3 спальни + 2 ванные) — 889k",v:"✅ В бюджет; ⭐ приватность + насос; ⚠ дома стоят плотно",f:["⭐ ОТДЕЛЬНОСТОЯЩИЙ — нет общих стен, никого сверху","⭐ тепловой насос (отд. помещение) + кондиционер","2 ванные наверху, перегородки демонтируемые (гибкая планировка)","⚠ участок 120 м² (сад ~73 м²) — дома стоят ОЧЕНЬ плотно (соседи в 1–2 м)","👀 уточнить: какая сторона на лес, что видно в боковые окна","⚠ доступен VII.2027 + stan deweloperski (отделка отдельно)","гараж отд., 1 место (спросить 2-е); агентство — узнать застройщика/эскроу/prowizję"]}
+ 41:{u:"сегмент 102,4 м²: партер 48 (гостиная-кухня 33 м²) + этаж 55 (3 спальни + 2 ванные) — 889k (= вход IV этапа Spring View)",v:"✅ В бюджет; ⭐ насос+рекуперация; ⚠ срок этапа уточняется",f:["застройщик Denya Cebus Poland — осиедле Spring View (148 домов, ul. Biedronki)","⚠ это СЕГМЕНТ/близняк, НЕ wolnostojący (посредник подписал неверно)","⭐ тепл. насос + рекуперация + под фотовольтаику + кондиционер","3 санузла, перегородки демонтируемые (гибкая планировка)","оплата 20/80 (20% при умове, 80% на сдаче)","эскроу MRP + DFG (открытый/закрытый — уточнить)","⚠ этап: IV → готов 2026 (✅ под срок) ИЛИ VI → VII.2027 — ПОДТВЕРДИТЬ","💡 покупка напрямую (biuro@springview.pl) — без комиссии и без PCC"]}
 };
-const LABELS={prio:["🟢 Приоритет","b-prio"],look:["🟡 Смотрим","b-look"],check:["🔵 Проверить","b-check"],res:["⚪ Резерв","b-res"],sec:["🔁 Вторичка","b-sec"]};
+const LABELS={work:["📨 В работе","b-work"],prio:["🟢 Приоритет","b-prio"],look:["🟡 Смотрим","b-look"],check:["🔵 Проверить","b-check"],res:["⚪ Резерв","b-res"],sec:["🔁 Вторичка","b-sec"]};
 const map=L.map('map').setView([52.09,20.90],11);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(map);
 const markers={};
@@ -381,10 +390,10 @@ function gmaps(o){return "https://www.google.com/maps/search/?api=1&query="+enco
 function finText(o){
   if(o.tags.join(" ").match(/под ключ/i)||(o.done||"").match(/pod klucz/i))return "🔨 отделка включена";
   const m=o.area.match(/\d+/);if(!m)return "";
-  return "🔨 отделка ~"+Math.round(parseInt(m[0])*1750/1000)+"k zł (отдельно)";
+  return "🔨 отделка+мебель ~"+Math.round(parseInt(m[0])*2500/1000)+"k zł (отдельно)";
 }
 function invBlock(o){const v=INVEST[o.id];if(!v)return"";const s=n=>"★".repeat(n)+"☆".repeat(3-n);return `<br><span class="inv">📈 ${s(v.g)} · 🔑 ${s(v.r)}</span>${v.why?`<br><span class="why">${v.why}</span>`:""}`;}
-const STATUS_COLOR={prio:"#16a34a",look:"#d97706",check:"#2563eb",res:"#94a3b8",sec:"#7c3aed"};
+const STATUS_COLOR={work:"#e11d48",prio:"#16a34a",look:"#d97706",check:"#2563eb",res:"#94a3b8",sec:"#7c3aed"};
 function pinIcon(c){return L.divIcon({className:"pinic",html:'<svg width="26" height="38" viewBox="0 0 26 38" xmlns="http://www.w3.org/2000/svg"><path d="M13 0C5.82 0 0 5.82 0 13c0 9.25 13 25 13 25s13-15.75 13-25C26 5.82 20.18 0 13 0z" fill="'+c+'" stroke="#ffffff" stroke-width="2"/><circle cx="13" cy="13" r="4.5" fill="#ffffff"/></svg>',iconSize:[26,38],iconAnchor:[13,38],popupAnchor:[0,-34]});}
 function offerBlock(o){const x=OFFER[o.id];if(!x)return"";return `<div class="offer"><div class="offer-u">📋 ${x.u}</div><div class="offer-v">${x.v}</div><ul class="offer-f">${x.f.map(i=>"<li>"+i+"</li>").join("")}</ul></div>`;}
 const BASE=["Точная цена выбранного юнита + что входит?","Парковка/гараж — в цене или доплата (сколько)?","Czynsz/opłata за осиедле — сколько zł/мес?","Эскроу: otwarty или zamknięty rachunek powierniczy + DFG?","Стандарт: stan deweloperski или под ключ?","Точная дата сдачи (akt notarialny)?","Тип отопления + класс энергии (счета зимой)?","Что разрешено строить рядом (MPZP)?","График траншей под ипотеку?"];
@@ -405,10 +414,20 @@ const QFULL={
  1:["Класс энергии / показатель EP (kWh/м²/год)?","Что выходит на южную сторону выбранного юнита — Planned Park? когда его построят и закреплён ли он в MPZP?","Парковка: можно 1 место (20k) вместо обязательных 2 (40k)?","Какие юниты ещё свободны на нужный этап (IV–VI / VII–VIII)?","График траншей под ипотеку"],
  2:["Тип отопления именно у выбранного дома (эко = тепловой насос?) + класс энергии EP","Сколько домов осталось и какие (метраж/цена/срок)?","🚩 Budynek 63: почему гараж 162k отдельно? можно дешевле без гаража? влияние на ипотеку/PCC/программу?","czynsz/opłata за осиедле — сколько/мес?","Тип эскроу (otwarty/zamknięty) + DFG?","Устранены ли дефекты прошлых приёмок? — настаиваем на независимом odbiór"],
  19:["Точная цена нужного юнита (72–80 м²) + что входит?","Срок сдачи (akt notarialny)?","Парковка/гараж — в цене или доплата?","czynsz/opłata за осиедле?","Класс энергии EP? подтвердить тепловой насос","Тип эскроу + DFG?","Что разрешено строить рядом (MPZP)?"],
- 24:["Тип «Dom» — отдельностоящий или половина близняка?","Парковка/гараж — в цене или доплата (как +40k у Nova Magdalenka)?","czynsz/opłata?","Точный срок сдачи?","Класс энергии EP? (отопление газ — подтвердить расход)","Тип эскроу + DFG?","Все ли юниты 75 м²/3 комнаты или есть больше?"]
+ 24:["Тип «Dom» — отдельностоящий или половина близняка?","Парковка/гараж — в цене или доплата (как +40k у Nova Magdalenka)?","czynsz/opłata?","Точный срок сдачи?","Класс энергии EP? (отопление газ — подтвердить расход)","Тип эскроу + DFG?","Все ли юниты 75 м²/3 комнаты или есть больше?"],
+ 41:["❗ К какому ЭТАПУ относится этот дом (102 м²/889k) и точная дата odbioru — IV (готов 2026) или VI (VII.2027)?","Прислать prospekt informacyjny + rzut дома","Эскроу: otwarty или zamknięty MRP + DFG?","2 места под машину на участке именно этого юнита — подтвердить","czynsz/opłata за осиедле — сколько zł/мес?","Класс энергии EP + ориентир счетов за отопление зимой","Торг по цене 889k? график траншей 20/80 под ипотеку","Подтвердить покупку напрямую без комиссии и без PCC","Оплата: rezerwacja/взнос только переводом на эскроу? размер zadatku + сроки добора 20% + какие документы по источнику средств?"]
 };
 const VIEWQ=["🏠 Сколько общих стен — сосед с 1 стороны или с 2? крайний ли это сегмент/близняк? (нет ли соседей сверху — это дом, не квартира)","👀 Что выходит на окна и сад — зелень/лес/парк или окна соседей? есть ли сосед сзади?"];
 function askBlock(o){const core=QFULL[o.id]||((ASK[o.id]||[]).concat(o.status==="sec"?BASE_SEC:BASE));const q=core.concat(VIEWQ);return `<details class="ask"><summary>❓ Что спросить у девелопера (${q.length})</summary><ul>${q.map(i=>"<li>"+i+"</li>").join("")}</ul></details>`;}
+const LOG={
+ 41:[
+  {dir:"out",d:"наш запрос (ogł. 138080, Pani Julia)",t:"Кто застройщик + эскроу/DFG? комиссия/PCC? ориентация на лес, боковые окна, расстояние до соседей; парковка (гараж 1 место — докупить 2-е?); отопление + класс энергии + счета; срок (lipiec 2027) и состав stan deweloperski; czynsz; торг + график траншей под ипотеку; доступен ли дом и сколько осталось; прислать prospekt informacyjny + rzut."},
+  {dir:"in",d:"ответ менеджера",t:"Оферта актуальна: I–III этапы проданы, премьера V и VI, остались последние готовые сегменты IV этапа. Эскроу MRP + DFG — да. Напрямую от девелопера — без комиссии и без PCC. Виды — общо (юг/запад, зелень/внутр. дворы). VI этап — сдача III кв.2027 (= ваш ориентир lipiec 2027); IV этап — конец 2026. Парковка: подземных гаражей нет, наземные + подъезды, 2-е место зависит от участка. Оплата 20/80."},
+  {dir:"note",d:"наш разбор",t:"Вычислили сами: застройщик = <b>Denya Cebus Poland</b> (Denya Group, биржа Тель-Авив), осиедле <b>Spring View</b>, ul. Biedronki 33/35 — это сегменты/близняки, <b>НЕ wolnostojący</b>. НЕ ответили: имя застройщика, точный этап ЭТОГО дома, класс энергии/счета, czynsz, торг; проспект не прислали. 889k = вход IV этапа (от 890k, готов 2026) → возможно, это дом IV этапа (тогда под срок ✅)."},
+  {dir:"note",d:"➡️ следующий шаг",t:"Писать НАПРЯМУЮ девелоперу: <b>biuro@springview.pl</b> / Joanna Chodzeń +48 539 866 476 — какой этап и дата odbioru у дома 102 м²/889k + prospekt informacyjny + открытый/закрытый эскроу. Пробить Denya Cebus по KRS."}
+ ]
+};
+function logBlock(o){const l=LOG[o.id];if(!l)return"";const ic={out:"📤",in:"📥",note:"📝"};return `<details class="log"><summary>📨 Переписка и статус (${l.length})</summary><ul>${l.map(m=>`<li class="${m.dir}"><span class="d">${ic[m.dir]||""} ${m.d}</span>${m.t}</li>`).join("")}</ul></details>`;}
 const HEAT={1:{t:"газ",c:"gas"},2:{t:"тепл. насос + PV",c:"good"},3:{t:"тепл. насос + PV",c:"good"},4:{t:"тепл. насос + PV (A+)",c:"good"},11:{t:"тепловой насос",c:"good"},19:{t:"тепловой насос",c:"good"},23:{t:"тепл. насос + PV",c:"good"},25:{t:"тепловой насос",c:"good"},20:{t:"газ (уточнить)",c:"gas"},24:{t:"газ (уточнить)",c:"gas"},27:{t:"газ (тёплый пол)",c:"gas"},28:{t:"газ",c:"gas"},41:{t:"тепл. насос + кондиц.",c:"good"},48:{t:"тепл. насос",c:"good"},58:{t:"тепл. насос",c:"good"},61:{t:"тепл. насос + PV",c:"good"}};
 function heatBadge(o){const x=HEAT[o.id]||{t:"отопление: уточнить",c:"na"};return `<span class="heat heat-${x.c}">🔥 ${x.t}</span>`;}
 function neighInfo(o){const s=(o.type+" "+o.name+" "+(o.tags||[]).join(" ")).toLowerCase();
@@ -436,7 +455,7 @@ function render(filter){
       🏠 ${o.type} · ${o.area}<br>
       <span class="price">💰 ${o.price}</span> ${o.entry?`· <span style="color:#64748b">${o.entry}</span>`:""}<br>
       🗓 ${o.done}${ft?`<br><span class="fin">${ft}</span>`:""}<br>${heatBadge(o)} ${neighBadge(o)}${invBlock(o)}</div>
-      <div>${tags}</div>${offerBlock(o)}${askBlock(o)}
+      <div>${tags}</div>${offerBlock(o)}${askBlock(o)}${logBlock(o)}
       <div class="links">
         <a href="${o.site}" target="_blank" rel="noopener">🌐 Сайт застройщика</a>
         <a href="${LINKS[o.id]||o.portal}" target="_blank" rel="noopener">📷 ${LINKS[o.id]?"Фото и планировки":"Портал / фото"}</a>
@@ -455,7 +474,7 @@ function render(filter){
 }
 function focusMap(id){const o=OBJ.find(x=>x.id===id);map.setView([o.lat,o.lng],15);markers[id].openPopup();window.scrollTo({top:0,behavior:'smooth'});}
 const fbar=document.getElementById('filters');
-[["all","Все"],["prio","🟢 Приоритет"],["look","🟡 Смотрим"],["check","🔵 Проверить"],["res","⚪ Резерв"],["sec","🔁 Вторичка"]].forEach(([k,t],i)=>{
+[["all","Все"],["work","📨 В работе"],["prio","🟢 Приоритет"],["look","🟡 Смотрим"],["check","🔵 Проверить"],["res","⚪ Резерв"],["sec","🔁 Вторичка"]].forEach(([k,t],i)=>{
   const b=document.createElement('button');b.textContent=t;if(i===0)b.className="active";
   b.onclick=()=>{document.querySelectorAll('.filters button').forEach(x=>x.classList.remove('active'));b.classList.add('active');render(k);};
   fbar.appendChild(b);
