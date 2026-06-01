@@ -266,6 +266,18 @@ const OBJ = [
    site:"https://www.otodom.pl/pl/oferta/blizniak-pompa-ciepla-dz-132m-amp-225m-ID4BbgF",portal:"https://www.otodom.pl/pl/oferta/blizniak-pompa-ciepla-dz-132m-amp-225m-ID4BbgF"},
  {id:59,status:"prio",name:"Крайний сегмент 71 м² Pruszków",dev:"уточнить (частное)",loc:"Pruszków",gmina:"Pruszków",type:"сегмент крайний",area:"71 м²",price:"≤950k (по ссылке)",entry:"⭐ skrajny, большой сад, без prowizji",done:"уточнить",tags:["Otodom-находка","у 3M"],lat:52.1640,lng:20.8120,
    site:"https://www.otodom.pl/pl/oferta/skrajny-segment-4-pok-duzy-ogrod-bez-prowizji-ID4Blbd",portal:"https://www.otodom.pl/pl/oferta/skrajny-segment-4-pok-duzy-ogrod-bez-prowizji-ID4Blbd"},
+ {id:60,status:"look",name:"Дом 73 м² Rybie (после ремонта)",dev:"уточнить (вторичка)",loc:"Rybie (Raszyn)",gmina:"Raszyn",type:"дом",area:"73 м²",price:"≤950k (по ссылке)",entry:"вторичка, после ремонта — готов",done:"уточнить",tags:["Otodom-находка","свежий свип"],lat:52.1430,lng:20.9100,
+   site:"https://www.otodom.pl/pl/oferta/dom-73m-po-remoncie-raszyn-ID4BAjc",portal:"https://www.otodom.pl/pl/oferta/dom-73m-po-remoncie-raszyn-ID4BAjc"},
+ {id:61,status:"look",name:"Antoninów Park — дом 92 м², участок 522 м²",dev:"уточнить (частное)",loc:"Antoninów (Piaseczno)",gmina:"Piaseczno",type:"дом",area:"92 м²",price:"≤950k (по ссылке)",entry:"⭐ большой участок 522 м², у леса, насос+PV",done:"уточнить",tags:["Otodom-находка","свежий свип"],lat:52.0600,lng:20.9900,
+   site:"https://www.otodom.pl/pl/oferta/antoninow-park-92m2-dzialka-522-m2-warszawa-las-ekodom-pompa-foto-ID4Bm1L",portal:"https://www.otodom.pl/pl/oferta/antoninow-park-92m2-dzialka-522-m2-warszawa-las-ekodom-pompa-foto-ID4Bm1L"},
+ {id:62,status:"look",name:"Kompaktowe domy Głosków — 96 м² + гараж",dev:"уточнить (частное)",loc:"Głosków (Piaseczno)",gmina:"Piaseczno",type:"дом",area:"96 м²",price:"≤950k (по ссылке)",entry:"4 комн, гараж (свежее)",done:"уточнить",tags:["Otodom-находка","свежий свип"],lat:52.0300,lng:20.9800,
+   site:"https://www.otodom.pl/pl/oferta/kompaktowe-domy-gloskow-4-pokoje-garaz-ID4Bvhm",portal:"https://www.otodom.pl/pl/oferta/kompaktowe-domy-gloskow-4-pokoje-garaz-ID4Bvhm"},
+ {id:63,status:"look",name:"Дом 80 м² Wólka Pracka / Złotokłos",dev:"уточнить (частное)",loc:"Złotokłos (Piaseczno)",gmina:"Piaseczno",type:"дом",area:"80 м²",price:"≤950k (по ссылке)",entry:"Piaseczno-юг",done:"уточнить",tags:["Otodom-находка","свежий свип"],lat:52.0000,lng:20.8800,
+   site:"https://www.otodom.pl/pl/oferta/dom-80-12-m2-wolka-pracka-zlotoklos-ID4BfIw",portal:"https://www.otodom.pl/pl/oferta/dom-80-12-m2-wolka-pracka-zlotoklos-ID4BfIw"},
+ {id:64,status:"look",name:"Дома 87–131 м² Wola Gołkowska",dev:"уточнить (частное)",loc:"Wola Gołkowska (Piaseczno)",gmina:"Piaseczno",type:"дом",area:"87–131 м²",price:"≤950k (по ссылке)",entry:"4–5 комн, выбор метража",done:"уточнить",tags:["Otodom-находка","свежий свип"],lat:52.0400,lng:20.9500,
+   site:"https://www.otodom.pl/pl/oferta/nowe-domy-od-87-do-131m-pod-warszawa-45-pokoi-og-ID4AueG",portal:"https://www.otodom.pl/pl/oferta/nowe-domy-od-87-do-131m-pod-warszawa-45-pokoi-og-ID4AueG"},
+ {id:65,status:"look",name:"Bliźniak 85 м² Chylice Pólko (cesja)",dev:"уточнить (частное)",loc:"Chylice Pólko (Piaseczno)",gmina:"Piaseczno",type:"близняк",area:"85 м²",price:"≤950k (по ссылке)",entry:"уступка (cesja), с садиком",done:"уточнить",tags:["Otodom-находка","свежий свип"],lat:52.0700,lng:21.0200,
+   site:"https://www.otodom.pl/pl/oferta/blizniak-z-ogrodkiem-cesja-chylice-polko-ID4AQ5E",portal:"https://www.otodom.pl/pl/oferta/blizniak-z-ogrodkiem-cesja-chylice-polko-ID4AQ5E"},
 ];
 const INVEST={
  1:{g:3,r:3,why:"Надёжный девелопер + осиедле с детсадом/магазином/спортзалом = магнит для аренды и ликвидность."},
@@ -330,7 +342,13 @@ const LINKS={
  56:"https://www.otodom.pl/pl/oferta/okazja-dom-w-stanie-deweloperskim-z-ogrodem-2-x-parking-nadarzyn-ID4Awjy",
  57:"https://www.otodom.pl/pl/oferta/ecosegment-narozny-tani-kredyt-1-ceny-reszta-przy-odbiorze-kluczy-ID4ySTY",
  58:"https://www.otodom.pl/pl/oferta/blizniak-pompa-ciepla-dz-132m-amp-225m-ID4BbgF",
- 59:"https://www.otodom.pl/pl/oferta/skrajny-segment-4-pok-duzy-ogrod-bez-prowizji-ID4Blbd"
+ 59:"https://www.otodom.pl/pl/oferta/skrajny-segment-4-pok-duzy-ogrod-bez-prowizji-ID4Blbd",
+ 60:"https://www.otodom.pl/pl/oferta/dom-73m-po-remoncie-raszyn-ID4BAjc",
+ 61:"https://www.otodom.pl/pl/oferta/antoninow-park-92m2-dzialka-522-m2-warszawa-las-ekodom-pompa-foto-ID4Bm1L",
+ 62:"https://www.otodom.pl/pl/oferta/kompaktowe-domy-gloskow-4-pokoje-garaz-ID4Bvhm",
+ 63:"https://www.otodom.pl/pl/oferta/dom-80-12-m2-wolka-pracka-zlotoklos-ID4BfIw",
+ 64:"https://www.otodom.pl/pl/oferta/nowe-domy-od-87-do-131m-pod-warszawa-45-pokoi-og-ID4AueG",
+ 65:"https://www.otodom.pl/pl/oferta/blizniak-z-ogrodkiem-cesja-chylice-polko-ID4AQ5E"
 };
 const OFFER={
  1:{u:"3к 66 м² — 619k · 3к 73 м² — 639k · 4к 82 м² — 699–739k · 4–5к 92 м² — 849k",v:"✅ В бюджет: 66–82 м² (619–739k) + парковка",f:["+ парковка 40k (обязательна)","czynsz ~250 zł/мес","stan deweloperski","сдача I кв. 2027","детсад + магазин + спортзал на осиедли","эскроу otwarty MRP"]},
@@ -390,7 +408,7 @@ const QFULL={
 };
 const VIEWQ=["🏠 Сколько общих стен — сосед с 1 стороны или с 2? крайний ли это сегмент/близняк? (нет ли соседей сверху — это дом, не квартира)","👀 Что выходит на окна и сад — зелень/лес/парк или окна соседей? есть ли сосед сзади?"];
 function askBlock(o){const core=QFULL[o.id]||((ASK[o.id]||[]).concat(o.status==="sec"?BASE_SEC:BASE));const q=core.concat(VIEWQ);return `<details class="ask"><summary>❓ Что спросить у девелопера (${q.length})</summary><ul>${q.map(i=>"<li>"+i+"</li>").join("")}</ul></details>`;}
-const HEAT={1:{t:"газ",c:"gas"},2:{t:"тепл. насос + PV",c:"good"},3:{t:"тепл. насос + PV",c:"good"},4:{t:"тепл. насос + PV (A+)",c:"good"},11:{t:"тепловой насос",c:"good"},19:{t:"тепловой насос",c:"good"},23:{t:"тепл. насос + PV",c:"good"},25:{t:"тепловой насос",c:"good"},20:{t:"газ (уточнить)",c:"gas"},24:{t:"газ (уточнить)",c:"gas"},27:{t:"газ (тёплый пол)",c:"gas"},28:{t:"газ",c:"gas"},41:{t:"тепл. насос + кондиц.",c:"good"},48:{t:"тепл. насос",c:"good"},58:{t:"тепл. насос",c:"good"}};
+const HEAT={1:{t:"газ",c:"gas"},2:{t:"тепл. насос + PV",c:"good"},3:{t:"тепл. насос + PV",c:"good"},4:{t:"тепл. насос + PV (A+)",c:"good"},11:{t:"тепловой насос",c:"good"},19:{t:"тепловой насос",c:"good"},23:{t:"тепл. насос + PV",c:"good"},25:{t:"тепловой насос",c:"good"},20:{t:"газ (уточнить)",c:"gas"},24:{t:"газ (уточнить)",c:"gas"},27:{t:"газ (тёплый пол)",c:"gas"},28:{t:"газ",c:"gas"},41:{t:"тепл. насос + кондиц.",c:"good"},48:{t:"тепл. насос",c:"good"},58:{t:"тепл. насос",c:"good"},61:{t:"тепл. насос + PV",c:"good"}};
 function heatBadge(o){const x=HEAT[o.id]||{t:"отопление: уточнить",c:"na"};return `<span class="heat heat-${x.c}">🔥 ${x.t}</span>`;}
 function neighInfo(o){const s=(o.type+" "+o.name+" "+(o.tags||[]).join(" ")).toLowerCase();
  if(/2-локальн|dwulokal|сосед сверху|по этажу/.test(s))return {t:"2-локальный — сосед сверху/снизу",c:"warn"};
