@@ -35,6 +35,11 @@
   .b-sec{background:#ede9fe;color:#6d28d9}
   .b-work{background:#ffe4e6;color:#9f1239}
   .b-gone{background:#e2e8f0;color:#334155;text-decoration:line-through}
+  .ph{font-size:12px;margin:6px 0 2px}
+  .ph .phm{color:#94a3b8}
+  .ph .phdown{color:#166534;font-weight:700}
+  .ph .phup{color:#b91c1c;font-weight:700}
+  .ph .phflat{color:#64748b}
   .log{margin-top:6px;font-size:12px}
   .log summary{cursor:pointer;color:#9f1239;font-weight:600;font-size:12.5px}
   .log ul{margin:6px 0 0;padding-left:0;list-style:none}
@@ -449,6 +454,33 @@ function neighInfo(o){const s=(o.type+" "+o.name+" "+(o.tags||[]).join(" ")).toL
  if(/дом/.test(s))return {t:"дом — уточнить тип (отдельный/близняк/сегмент)",c:"na"};
  return {t:"тип — уточнить",c:"na"};}
 function neighBadge(o){const x=neighInfo(o);return `<span class="neigh neigh-${x.c}">🏠 ${x.t}</span>`;}
+const PRICE_HISTORY={
+ 1:[{d:"30.05",p:699000},{d:"04.07",p:629000}],
+ 2:[{d:"30.05",p:739000},{d:"04.07",p:739000}],
+ 14:[{d:"04.07",p:659000}],16:[{d:"04.07",p:699000}],19:[{d:"04.07",p:671600}],
+ 20:[{d:"04.07",p:933636}],23:[{d:"04.07",p:844000}],24:[{d:"04.07",p:689000}],
+ 25:[{d:"04.07",p:679000}],27:[{d:"04.07",p:728254}],30:[{d:"04.07",p:787262}],
+ 32:[{d:"04.07",p:949000}],33:[{d:"04.07",p:948999}],35:[{d:"04.07",p:649000}],
+ 36:[{d:"04.07",p:900000}],41:[{d:"02.06",p:889000}],42:[{d:"04.07",p:739000}],
+ 43:[{d:"04.07",p:773756}],46:[{d:"04.07",p:745000}],48:[{d:"04.07",p:699000}],
+ 51:[{d:"04.07",p:599000}],52:[{d:"04.07",p:695000}],53:[{d:"04.07",p:839000}],
+ 54:[{d:"04.07",p:699900}],55:[{d:"04.07",p:745000}],56:[{d:"04.07",p:750000}],
+ 60:[{d:"04.07",p:620000}],
+ 68:[{d:"18.06",p:774287},{d:"22.06",p:734000}],
+ 69:[{d:"23.06",p:914000}]
+};
+function phNum(n){return n==null?"—":Math.round(n).toLocaleString("ru-RU").replace(/ /g," ");}
+function priceHist(o){
+  const h=PRICE_HISTORY[o.id]; if(!h||!h.length) return "";
+  if(h.length===1){return `<div class="ph">📈 <b>${phNum(h[0].p)} zł</b> <span class="phm">· база ${h[0].d}; динамика — после недельных проверок</span></div>`;}
+  const a=h[0],b=h[h.length-1],dv=(b.p||0)-(a.p||0);
+  const arrow=dv<0?"🔻":dv>0?"🔺":"▪️";
+  const cls=dv<0?"phdown":dv>0?"phup":"phflat";
+  const pct=a.p?` (${(dv/a.p*100).toFixed(1)}%)`:"";
+  const trail=h.map(x=>`${x.d}: ${phNum(x.p)}`).join(" → ");
+  const delta=dv===0?"без изменений":`${dv>0?"+":""}${phNum(dv)} zł${pct}`;
+  return `<div class="ph">📈 <span class="${cls}">${arrow} ${delta}</span> <span class="phm">· ${trail}</span></div>`;
+}
 function render(filter){
   const grid=document.getElementById('grid');grid.innerHTML="";let n=0;objLayer.clearLayers();const used={};
   const SC=o=>{const v=INVEST[o.id];return v?v.g+v.r:0;};
@@ -463,7 +495,7 @@ function render(filter){
       <div class="meta">📍 ${o.loc} <span style="color:#94a3b8">(гм. ${o.gmina})</span><br>
       🏠 ${o.type} · ${o.area}<br>
       <span class="price">💰 ${o.price}</span> ${o.entry?`· <span style="color:#64748b">${o.entry}</span>`:""}<br>
-      🗓 ${o.done}${ft?`<br><span class="fin">${ft}</span>`:""}<br>${heatBadge(o)} ${neighBadge(o)}${invBlock(o)}</div>
+      🗓 ${o.done}${ft?`<br><span class="fin">${ft}</span>`:""}<br>${heatBadge(o)} ${neighBadge(o)}${invBlock(o)}</div>${priceHist(o)}
       <div>${tags}</div>${offerBlock(o)}${askBlock(o)}${logBlock(o)}
       <div class="links">
         <a href="${o.site}" target="_blank" rel="noopener">🌐 Сайт застройщика</a>
