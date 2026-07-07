@@ -98,6 +98,24 @@
   .res .big{font-size:16px;margin-top:6px;padding-top:10px;border-top:2px solid var(--accent)}
   .res .pos{color:#166534;font-weight:700}.res .neg{color:#b91c1c;font-weight:700}
   .disc{font-size:11.5px;color:var(--muted);margin-top:10px}
+  .calc-src{background:#f0f7ff;border:1px solid #cfe3ff;border-radius:10px;padding:12px 14px;margin:0 0 14px;font-size:12.5px;color:#334155}
+  .calc-src b{color:var(--accent)}
+  .calc-src summary{cursor:pointer;font-weight:700;color:var(--accent)}
+  .calc-src table{width:100%;border-collapse:collapse;margin-top:10px}
+  .calc-src th,.calc-src td{text-align:left;padding:5px 6px;border-bottom:1px solid #dbeafe;font-size:12px;vertical-align:top}
+  .calc-src th{color:var(--muted);font-weight:600}
+  .calc-src td.best{background:#ecfdf5}
+  .presets{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px}
+  .presets button{cursor:pointer;border:1px solid var(--line);background:#fff;border-radius:8px;padding:8px 12px;font-size:13px;font-weight:600;color:#334155}
+  .presets button:hover{border-color:var(--accent);color:var(--accent)}
+  .presets button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .preset-hint{font-size:11.5px;color:var(--muted);margin:0 0 14px}
+  .subhead{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin:14px 0 6px;padding-bottom:3px;border-bottom:1px solid var(--line)}
+  .subhead:first-child{margin-top:0}
+  .calc-actions{display:flex;gap:10px;margin-top:14px}
+  .calc-actions button{cursor:pointer;border-radius:8px;padding:10px 18px;font-size:13.5px;font-weight:700;border:1px solid var(--accent)}
+  .btn-calc{background:var(--accent);color:#fff}
+  .btn-reset{background:#fff;color:var(--accent)}
   footer{color:var(--muted);font-size:12px;text-align:center;padding:24px}
 </style>
 </head>
@@ -139,24 +157,62 @@
   <!-- ====== КАЛЬКУЛЯТОР ====== -->
   <section id="calc">
     <h2>🧮 Калькулятор сделки</h2>
-    <p class="sub">Обычная ипотека (госпрограмма RKM паре подруг, скорее всего, не положена). Доступно ~150k на взнос → при 10% (~74k) остаётся запас. Меняй цифры — расчёт обновляется сразу.</p>
+    <p class="sub">Ставки и страховки — из <b>реальной симуляции Беаты (mFinanse), 13.06.2026</b>, объект 744 000 zł · LTV 90% · 30 лет. Выбери банк-предложение ниже — поля заполнятся его цифрами. Цену/отделку меняй под наш объект (Ecobotanica Mroków — 822 000 zł). Расчёт обновляется сразу; кнопка «Пересчитать» — для наглядности.</p>
+
+    <details class="calc-src">
+      <summary>📄 Откуда цифры — предложения банков из симуляции Беаты (13.06.2026)</summary>
+      <p style="margin:8px 0 0">Симуляция сделана на <b>кредит 669 600 zł</b> (объект 744 000, взнос 10%). У нашего объекта (822 000) кредит больше — платёж масштабируется вверх пропорционально, ставки те же.</p>
+      <table>
+        <tr><th>Банк / предложение</th><th>Ставка</th><th>Платёж (рата)</th><th>RRSO</th><th>Страховки</th></tr>
+        <tr><td class="best"><b>Erste</b> — внутр. клиент Platinum <i>(стал.)</i></td><td class="best">6,25% (1–5 лет)<br>→ 5,9%</td><td class="best">4 123 zł<br>→ 3 989 zł</td><td class="best">6,52%</td><td class="best">жизнь 0,035%/мес<br>недвиж. 0,09%/год</td></tr>
+        <tr><td class="best"><b>mBank</b> Elastyczna <i>(zmienne, активный клиент)</i></td><td class="best">5,91%</td><td class="best">3 976 zł</td><td class="best">6,36%</td><td class="best">жизнь 0,05%/мес<br>недвиж. 0,0233%/год</td></tr>
+        <tr><td><b>mBank</b> Stała Pewność <i>(стал.)</i></td><td>6,71% → 5,91%</td><td>4 325 → 4 014 zł</td><td>6,7%</td><td>жизнь 0,05%/мес</td></tr>
+        <tr><td><b>PKO</b> Własny Kąt <i>(стал.)</i></td><td>7,06% → 6,61%</td><td>4 482 → 4 302 zł</td><td>7,49%</td><td>жизнь дорогая (0,42%/год)</td></tr>
+      </table>
+      <p style="margin:8px 0 0;font-size:11.5px;color:#64748b">Провизия у всех 0 zł. Взнос 10% (LTV 90%). Зелёным — два лучших предложения (кнопки-пресеты ниже). Есть ещё симуляция от 08.06 на объект 890 000 zł (кредит 801 000) — те же банки, платежи выше.</p>
+    </details>
+
+    <div class="subhead">Предложение банка (заполнит ставку и страховки)</div>
+    <div class="presets" id="presets">
+      <button data-p="erste" class="active">Erste — 6,25% стал. (5 лет)</button>
+      <button data-p="mbank">mBank — 5,91% zmienne</button>
+    </div>
+    <p class="preset-hint">Пресет только подставляет ставку/страховки Беаты — цену, взнос и отделку задаёшь сам ниже.</p>
+
     <div class="calc-grid">
       <div>
-        <div class="inp"><label>Цена объекта (вкл. парковку), zł</label><input id="i_price" type="number" value="739000"></div>
-        <div class="inp"><label>Оформление (нотариус/вписи), zł</label><input id="i_close" type="number" value="12000"></div>
-        <div class="inp"><label>Отделка + мебель (отдельно), zł</label><input id="i_fin" type="number" value="250000"></div>
-        <div class="inp"><label>Первый взнос, % (минимум обычно 10%)</label><input id="i_down" type="number" value="10"></div>
-        <div class="inp"><label>Ставка, % годовых</label><input id="i_rate" type="number" step="0.1" value="6.5"></div>
+        <div class="subhead">Объект и деньги на старте</div>
+        <div class="inp"><label>Цена объекта (вкл. парковку), zł</label><input id="i_price" type="number" value="822000"></div>
+        <div class="inp"><label>Первый взнос, % (мин. 10%)</label><input id="i_down" type="number" value="10"></div>
+        <div class="inp"><label>Оформление (нотариус/вписи/вычена), zł</label><input id="i_close" type="number" value="12000"></div>
+        <div class="inp"><label>Отделка + мебель (отдельно), zł</label><input id="i_fin" type="number" value="200000"></div>
+
+        <div class="subhead">Кредит (ставки — Беаты)</div>
+        <div class="inp"><label>Ставка 1-й период (фикс.), % год.</label><input id="i_rate1" type="number" step="0.01" value="6.25"></div>
+        <div class="inp"><label>Длина 1-го периода, лет</label><input id="i_fix" type="number" value="5"></div>
+        <div class="inp"><label>Ставка после, % год.</label><input id="i_rate2" type="number" step="0.01" value="5.9"></div>
         <div class="inp"><label>Срок кредита, лет</label><input id="i_term" type="number" value="30"></div>
-        <div class="inp"><label>Прочие расходы/мес (opłata+коммуналка+податок), zł</label><input id="i_other" type="number" value="1050"></div>
+
+        <div class="subhead">Страховки и расходы (Беаты)</div>
+        <div class="inp"><label>Страх. жизни, %/мес от остатка</label><input id="i_life" type="number" step="0.005" value="0.035"></div>
+        <div class="inp"><label>…в течение, лет</label><input id="i_lifey" type="number" value="5"></div>
+        <div class="inp"><label>Страх. недвиж., %/год от цены</label><input id="i_prop" type="number" step="0.001" value="0.09"></div>
+        <div class="inp"><label>Прочее/мес (opłata+ком.+податок), zł</label><input id="i_other" type="number" value="1050"></div>
+
+        <div class="subhead">Сценарий выхода</div>
         <div class="inp"><label>Рост цены, % в год</label><input id="i_growth" type="number" step="0.1" value="5"></div>
         <div class="inp"><label>Горизонт выхода, лет</label><input id="i_hor" type="number" value="5"></div>
         <div class="inp"><label>Аренда (если сдавать), zł/мес</label><input id="i_rent" type="number" value="4500"></div>
         <div class="inp chk"><input id="i_tax" type="checkbox" checked><label>продажа до 5 лет → налог PIT 19% с прироста</label></div>
+
+        <div class="calc-actions">
+          <button type="button" class="btn-calc" id="btn_calc">🔄 Пересчитать</button>
+          <button type="button" class="btn-reset" id="btn_reset">↺ Сбросить к данным Беаты</button>
+        </div>
       </div>
       <div class="res" id="res"></div>
     </div>
-    <p class="disc">Расчёт ориентировочный. «Денежный результат» считает все платежи по кредиту как расход (вы бы платили аренду в любом случае — реальная выгода обычно выше). Налог: база = цена+отделка+оформление; освобождение при продаже после 5 лет или реинвесте. Не является финансовой консультацией.</p>
+    <p class="disc">Расчёт ориентировочный. Платёж считается амортизацией: 1-й период по фикс. ставке, затем пересчёт остатка по ставке «после». Страховки — по ставкам из симуляции Беаты (жизнь — от убывающего остатка, недвиж. — от цены объекта). «Денежный результат» считает все платежи и страховки как расход (аренду вы платили бы в любом случае — реальная выгода обычно выше). Налог: база = цена+отделка+оформление; освобождение при продаже после 5 лет или реинвесте. Не является финансовой консультацией.</p>
   </section>
 </div>
 <footer>Источник: сайты застройщиков и порталы + POI OpenStreetMap. Не оферта.</footer>
@@ -640,45 +696,110 @@ document.querySelectorAll('.layers button').forEach(btn=>{
 });
 map.on('moveend',()=>{if(active.size)scheduleLoad();});
 
-/* ---------- Калькулятор сделки ---------- */
+/* ---------- Калькулятор сделки (данные из симуляции Беаты, mFinanse) ---------- */
 const fmt=n=>Math.round(n).toLocaleString('pl-PL')+" zł";
-const ids=["i_price","i_close","i_fin","i_down","i_rate","i_term","i_other","i_growth","i_hor","i_rent","i_tax"];
+const ids=["i_price","i_down","i_close","i_fin","i_rate1","i_fix","i_rate2","i_term",
+           "i_life","i_lifey","i_prop","i_other","i_growth","i_hor","i_rent","i_tax"];
+
+/* пресеты — точные ставки/страховки из симуляции Беаты 13.06.2026 */
+const PRESETS={
+  erste:{i_rate1:6.25,i_fix:5,i_rate2:5.9, i_life:0.035,i_lifey:5,i_prop:0.09},
+  mbank:{i_rate1:5.91,i_fix:0,i_rate2:5.91,i_life:0.05, i_lifey:5,i_prop:0.0233}
+};
+const DEFAULTS={i_price:822000,i_down:10,i_close:12000,i_fin:200000,i_term:30,
+                i_other:1050,i_growth:5,i_hor:5,i_rent:4500, ...PRESETS.erste};
+
+function applyPreset(name){
+  const p=PRESETS[name]; if(!p) return;
+  for(const id in p) document.getElementById(id).value=p[id];
+  document.querySelectorAll("#presets button").forEach(b=>b.classList.toggle("active",b.dataset.p===name));
+  calc();
+}
+
+/* помесячная амортизация: 1-й период по фикс. ставке, затем пересчёт остатка */
+function amort(credit,rate1,fixM,rate2,n){
+  const r1=rate1/100/12;
+  const rata1=r1>0 ? credit*r1/(1-Math.pow(1+r1,-n)) : credit/n;
+  let bal=credit, rata2=rata1;
+  const bals=[credit], pays=[0];        // bals[m], pays[m]=платёж в месяц m
+  for(let m=1;m<=n;m++){
+    let r,rata;
+    if(m<=fixM){ r=r1; rata=rata1; }
+    else{
+      if(m===fixM+1){ const r2=rate2/100/12; rata2 = r2>0 ? bal*r2/(1-Math.pow(1+r2,-(n-fixM))) : bal/(n-fixM); }
+      r=rate2/100/12; rata=rata2;
+    }
+    bal=Math.max(0,bal-(rata-bal*r));
+    bals.push(bal); pays.push(rata);
+  }
+  return {rata1,rata2,bals,pays};
+}
+
 function calc(){
   const v=id=>parseFloat(document.getElementById(id).value)||0;
-  const price=v("i_price"),close=v("i_close"),fin=v("i_fin"),downPct=v("i_down"),rate=v("i_rate"),
-        term=v("i_term"),other=v("i_other"),growth=v("i_growth"),hor=v("i_hor"),rent=v("i_rent"),
+  const price=v("i_price"),downPct=v("i_down"),close=v("i_close"),fin=v("i_fin"),
+        rate1=v("i_rate1"),fixY=v("i_fix"),rate2=v("i_rate2"),term=v("i_term"),
+        lifeR=v("i_life"),lifeY=v("i_lifey"),propR=v("i_prop"),other=v("i_other"),
+        growth=v("i_growth"),hor=v("i_hor"),rent=v("i_rent"),
         taxOn=document.getElementById("i_tax").checked;
+
   const down=price*downPct/100, credit=Math.max(0,price-down);
-  const r=rate/100/12, n=term*12, k=Math.min(hor*12,n);
-  const rata = r>0 ? credit*r/(1-Math.pow(1+r,-n)) : credit/n;
-  const monthly = rata+other;
+  const n=Math.max(1,term*12), fixM=Math.min(fixY*12,n), k=Math.min(hor*12,n), lifeM=Math.min(lifeY*12,n);
+  const {rata1,rata2,bals,pays}=amort(credit,rate1,fixM,rate2,n);
+
+  /* страховки */
+  const lifeMo0 = credit*lifeR/100;               // жизнь в 1-й месяц (от остатка, убывает)
+  const propYr  = price*propR/100;                // недвиж. в год (от цены/залога)
+  const propMo  = propYr/12;
+  const insMo0  = lifeMo0+propMo;
+
+  /* суммы за горизонт */
+  let rataPaid=0, lifePaid=0;
+  for(let m=1;m<=k;m++){ rataPaid+=pays[m]; if(m<=lifeM) lifePaid+=bals[m-1]*lifeR/100; }
+  const propPaid=propMo*k;
+
+  const monthly = rata1+insMo0+other;             // полная нагрузка/мес в 1-й период
   const cashStart = down+close+fin;
   const fv = price*Math.pow(1+growth/100,hor);
-  const balance = r>0 ? credit*(Math.pow(1+r,n)-Math.pow(1+r,k))/(Math.pow(1+r,n)-1) : credit*(1-k/n);
+  const balance = bals[k];
   const basis = price+fin+close;
   const tax = (taxOn && hor<5) ? 0.19*Math.max(0,fv-basis) : 0;
   const netCash = fv-balance-tax;                 // на руках после продажи и кредита
-  const equityGrow = netCash-cashStart;           // сверх стартового кэша (без учёта платежей)
-  const totalOut = cashStart + (rata+other)*k;    // всё вложено за период
+  const equityGrow = netCash-cashStart;           // прирост капитала (без учёта платежей)
+  const totalOut = cashStart + rataPaid + lifePaid + propPaid + other*k;
   const cashResult = netCash - totalOut;          // денежный результат (платежи как расход)
   const yieldG = rent*12/(price+fin+close)*100;   // брутто-доходность аренды
-  const cashflow = rent-rata-other;               // поток при сдаче
+  const cashflow = rent-rata1-insMo0-other;       // поток при сдаче
   const cls=x=>x>=0?"pos":"neg";
+  const rata2row = fixM>0 && fixM<n ? `<div class="row"><span>Платёж после ${fixY} лет (ставка ${rate2}%)</span><b>${fmt(rata2)}</b></div>` : ``;
+
   document.getElementById("res").innerHTML=`
-    <div class="row"><span>Кредит</span><b>${fmt(credit)}</b></div>
-    <div class="row"><span>Ежемесячный платёж</span><b>${fmt(rata)}</b></div>
-    <div class="row"><span>Полная нагрузка/мес (+ расходы)</span><b>${fmt(monthly)}</b></div>
-    <div class="row"><span>💵 Кэш на старте (взнос+оформл+отделка)</span><b>${fmt(cashStart)}</b></div>
+    <div class="row"><span>Кредит (${(100-downPct).toFixed(0)}% LTV)</span><b>${fmt(credit)}</b></div>
+    <div class="row"><span>Платёж по кредиту (1-й период, ${rate1}%)</span><b>${fmt(rata1)}</b></div>
+    ${rata2row}
+    <div class="row"><span>Страховка жизни ≈ 1-й мес (${lifeR}%)</span><b>${fmt(lifeMo0)}</b></div>
+    <div class="row"><span>Страховка недвиж./мес (${propR}%/год)</span><b>${fmt(propMo)}</b></div>
+    <div class="row"><span>Прочее/мес</span><b>${fmt(other)}</b></div>
+    <div class="row big"><span>💳 Полная нагрузка/мес</span><b>${fmt(monthly)}</b></div>
+    <div class="row" style="margin-top:6px"><span>💵 Кэш на старте (взнос+оформл+отделка)</span><b>${fmt(cashStart)}</b></div>
     <div class="row" style="margin-top:6px"><span>Стоимость через ${hor} лет (рост ${growth}%/год)</span><b>${fmt(fv)}</b></div>
-    <div class="row"><span>Остаток кредита</span><b>${fmt(balance)}</b></div>
+    <div class="row"><span>Остаток кредита через ${hor} лет</span><b>${fmt(balance)}</b></div>
     ${tax>0?`<div class="row"><span>Налог PIT 19% (продажа &lt;5 лет)</span><b>−${fmt(tax)}</b></div>`:``}
     <div class="row"><span>На руках после продажи и кредита</span><b>${fmt(netCash)}</b></div>
     <div class="row big"><span>📈 Рост капитала сверх стартового кэша</span><span class="${cls(equityGrow)}">${equityGrow>=0?"+":""}${fmt(equityGrow)}</span></div>
-    <div class="row"><span>Денежный результат (платежи как расход)</span><span class="${cls(cashResult)}">${cashResult>=0?"+":""}${fmt(cashResult)}</span></div>
+    <div class="row"><span>Денежный результат (платежи+страховки как расход)</span><span class="${cls(cashResult)}">${cashResult>=0?"+":""}${fmt(cashResult)}</span></div>
     <div class="row" style="margin-top:6px"><span>🏠 Если сдавать: брутто-доходность</span><b>${yieldG.toFixed(1)}%/год</b></div>
     <div class="row"><span>🏠 Денежный поток аренды/мес</span><span class="${cls(cashflow)}">${cashflow>=0?"+":""}${fmt(cashflow)}</span></div>`;
 }
+
 ids.forEach(id=>document.getElementById(id).addEventListener("input",calc));
+document.querySelectorAll("#presets button").forEach(b=>b.addEventListener("click",()=>applyPreset(b.dataset.p)));
+document.getElementById("btn_calc").addEventListener("click",calc);
+document.getElementById("btn_reset").addEventListener("click",()=>{
+  for(const id in DEFAULTS) document.getElementById(id).value=DEFAULTS[id];
+  document.querySelectorAll("#presets button").forEach(b=>b.classList.toggle("active",b.dataset.p==="erste"));
+  calc();
+});
 calc();
 </script>
 </body>
